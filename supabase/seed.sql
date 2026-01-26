@@ -32,13 +32,22 @@ INSERT INTO sources (name, url, region, is_active) VALUES
 -- Pacific
 ('ABC Australia', 'https://www.abc.net.au/news/feed/51120/rss.xml', 'Pacific', true),
 
--- Positive News Sources
+-- Constructive & Solutions Journalism
 ('Positive News', 'https://www.positive.news/feed/', 'Positive', true),
 ('Good Good Good', 'https://www.goodgoodgood.co/rss', 'Positive', true),
 ('Reasons to be Cheerful', 'https://reasonstobecheerful.world/feed/', 'Positive', true),
 ('Yes Magazine', 'https://www.yesmagazine.org/feeds/all', 'Positive', true),
+('Good News Network', 'https://www.goodnewsnetwork.org/feed/', 'Positive', true),
+('The Optimist Daily', 'https://www.optimistdaily.com/feed/', 'Positive', true),
+('Global Citizen', 'https://www.globalcitizen.org/en/feed/', 'Positive', true),
+('Borgen Magazine', 'https://www.borgenmagazine.com/feed/', 'Positive', true),
+
+-- Science & Progress
 ('Science Daily Environment', 'https://www.sciencedaily.com/rss/top/environment.xml', 'Positive', true),
-('Science Daily Health', 'https://www.sciencedaily.com/rss/top/health.xml', 'Positive', true)
+('Science Daily Health', 'https://www.sciencedaily.com/rss/top/health.xml', 'Positive', true),
+
+-- Constructive Sections of Major Outlets
+('Guardian Global Development', 'https://www.theguardian.com/global-development/rss', 'Positive', true)
 
 ON CONFLICT (url) DO UPDATE SET
     name = EXCLUDED.name,

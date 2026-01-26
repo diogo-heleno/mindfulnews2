@@ -4,7 +4,7 @@ Instructions and context for Claude Code when working on this project.
 
 ## Project Overview
 
-Mindful News v2 is a calm, constructive news aggregator. It fetches international news from RSS feeds, clusters related articles by theme, rewrites them in a mindful tone using Claude API, and assigns positivity scores (1-5).
+Mindful News v2 is a constructive news aggregator that seeks the best of humanity. It fetches international news from RSS feeds (with emphasis on constructive/solutions journalism sources), clusters related articles by theme, rewrites them with a mindful and hopeful tone using Claude API, and assigns positivity scores (1-5). The philosophy: inform without depressing, alert without alarming, inspire action without creating anxiety.
 
 ## Tech Stack
 
@@ -31,7 +31,7 @@ mindfulnews2/
 │   └── Dockerfile     # Multi-stage build (deps → builder → runner)
 ├── supabase/
 │   ├── schema.sql     # Tables, indexes, RLS, views, functions
-│   └── seed.sql       # 22 RSS sources
+│   └── seed.sql       # 27 RSS sources (14 international + 13 constructive)
 ├── docker-compose.yml
 └── .env.example
 ```
@@ -41,8 +41,9 @@ mindfulnews2/
 - Frontend uses `output: 'standalone'` in `next.config.js` for Docker
 - All colors use custom Tailwind palette: `cream`, `sage`, `ocean`, `stone`
 - The backend is NOT a long-running service - it's a one-shot job
-- Positivity scores: 1 (negative) to 5 (very positive)
-- Filter modes: uplifting (>=4), balanced (>=3), all (>=1)
+- Positivity scores: 1 (urgente) to 5 (inspiradora) - always constructive framing
+- Filter modes: uplifting/inspiradoras (>=4, default), balanced/equilibradas (>=3), all/todas (>=1)
+- Positive news sources get 2x weight in article selection
 
 ## Common Pitfalls
 

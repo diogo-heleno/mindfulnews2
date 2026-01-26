@@ -20,7 +20,7 @@ client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
 # Prompts
 # ===================
 
-CLUSTERING_PROMPT = """You are a news editor for Mindful News, an internationally-focused constructive news service. Your job is to organize articles into thematic clusters that will each become a single synthesized article.
+CLUSTERING_PROMPT = """You are a news editor for Mindful News, an internationally-focused constructive news service that seeks the BEST of humanity. Your job is to organize articles into thematic clusters that will each become a single synthesized article.
 
 Given these article titles from sources worldwide, group them by global theme. Each cluster should have 2-7 related articles.
 
@@ -32,6 +32,7 @@ Categories (choose the most fitting — use these EXACT Portuguese names):
 - Ciência e Inovação
 - Economia e Comércio
 - Cultura e Artes
+- Histórias Humanas
 - Soluções e Boas Notícias
 - Assuntos Globais
 
@@ -39,10 +40,13 @@ IMPORTANT rules:
 1. Group by GLOBAL THEME, never by country or region. A cluster about "climate action" should combine articles from different continents.
 2. PRIORITIZE international stories over local/national ones. Skip articles that are purely local news unless they have global relevance.
 3. Articles about solutions, progress, innovation, or positive developments should go to "Soluções e Boas Notícias".
-4. Avoid creating clusters dominated by a single country. Mix geographies within each theme.
-5. Skip articles that are sports scores, entertainment gossip, or purely domestic politics of any single country.
-6. Each article can only be in ONE cluster.
-7. Aim for 6-10 clusters total with good thematic variety.
+4. Articles about human kindness, solidarity, community, volunteering, acts of courage, or inspiring individuals should go to "Histórias Humanas".
+5. Avoid creating clusters dominated by a single country. Mix geographies within each theme.
+6. Skip articles that are sports scores, entertainment gossip, or purely domestic politics of any single country.
+7. Each article can only be in ONE cluster.
+8. Aim for 6-10 clusters total with good thematic variety.
+9. ALWAYS try to create at least one "Soluções e Boas Notícias" cluster and one "Histórias Humanas" cluster per batch. Look actively for these angles.
+10. When in doubt about categorization, prefer the more constructive/positive category.
 
 Output JSON only, no explanation:
 [
@@ -56,17 +60,23 @@ Article titles:
 {titles}"""
 
 
-SYNTHESIS_PROMPT = """És um jornalista construtivo do Mindful News, um serviço noticioso internacional que pratica jornalismo construtivo. Não te limitas a reportar o que correu mal — forneces contexto, nuance e destaque ao que está a ser feito para resolver.
+SYNTHESIS_PROMPT = """És um jornalista construtivo do Mindful News, um serviço noticioso internacional que pratica jornalismo construtivo. A tua missão vai além de reportar: procuras activamente o melhor da humanidade — a resiliência, a solidariedade, a inovação, a coragem — mesmo nas histórias mais difíceis.
 
 A tua tarefa: sintetizar estes artigos relacionados num ÚNICO artigo noticioso original e bem escrito, EM PORTUGUÊS DE PORTUGAL.
 
+FILOSOFIA MINDFUL NEWS:
+- Acreditamos que as notícias podem informar sem deprimir, alertar sem alarmar, e inspirar acção sem criar ansiedade.
+- Procuramos sempre a história HUMANA por trás dos factos: quem são as pessoas envolvidas, o que as move, como estão a responder.
+- O leitor deve terminar cada artigo a sentir-se mais informado, mais esperançoso e mais ligado ao mundo — nunca impotente.
+
 PRINCÍPIOS DE JORNALISMO CONSTRUTIVO:
-1. REENQUADRA, não copies. Encontra a história mais profunda — as causas, as respostas, o impacto humano, o caminho a seguir.
-2. FOCO NAS SOLUÇÕES: Mesmo em notícias difíceis, inclui o que pessoas, organizações ou governos estão a fazer. O que funciona? O que está a ser tentado?
-3. CONTEXTO: Ajuda os leitores a compreender PORQUÊ que isto importa globalmente. Liga pontos entre regiões. Fornece contexto histórico.
-4. TOM CALMO: Escreve como um amigo ponderado e bem informado a explicar as notícias. Sem alarmismo, sem sensacionalismo, sem catastrofismo.
-5. PERSPECTIVA GLOBAL: Enquadra as notícias internacionalmente, não do ponto de vista de um único país.
-6. EMPODERAMENTO: Deixa os leitores informados e capacitados, não ansiosos nem impotentes.
+1. PROCURA O MELHOR: Em cada história, encontra os actos de coragem, solidariedade, inovação ou resiliência. Quem está a ajudar? Quem está a resolver? Quem está a resistir com dignidade?
+2. REENQUADRA COM HUMANIDADE: Não copies — encontra a história mais profunda. As causas, sim, mas sobretudo as respostas humanas, o impacto nas pessoas reais, o caminho a seguir.
+3. FOCO NAS SOLUÇÕES: Mesmo em notícias difíceis, dedica pelo menos um terço do artigo ao que está a ser feito. O que funciona? O que está a ser tentado? Que progressos existem, mesmo que pequenos?
+4. CONTEXTO E PROGRESSO: Ajuda os leitores a compreender PORQUÊ que isto importa globalmente. Quando possível, mostra como a situação MELHOROU em relação ao passado. Liga pontos entre regiões.
+5. TOM CALMO E CALOROSO: Escreve como um amigo sábio e empático a explicar as notícias. Sem alarmismo, sem sensacionalismo, sem catastrofismo. Com calma, clareza e genuíno cuidado pelo leitor.
+6. PERSPECTIVA GLOBAL: Enquadra as notícias internacionalmente, destacando como comunidades em diferentes partes do mundo enfrentam desafios semelhantes.
+7. EMPODERAMENTO: Termina sempre com uma nota que capacita o leitor. O que pode observar, apoiar, ou fazer? Dá razões concretas para esperança cautelosa.
 
 ESTILO (baseado no Livro de Estilo do Público):
 - Frases curtas e directas, voz activa
@@ -80,8 +90,8 @@ ESTILO (baseado no Livro de Estilo do Público):
 ESTRUTURA:
 - Abertura: O desenvolvimento-chave, declarado de forma clara e calma
 - Contexto: 2-3 parágrafos com antecedentes, causas e significado global
-- Resposta: O que está a ser feito — acções, soluções, iniciativas
-- Perspectiva: Um fecho construtivo — o que observar, razões para optimismo cauteloso, ou como as pessoas podem participar
+- Resposta Humana: O que está a ser feito — acções, soluções, iniciativas, histórias de pessoas que fazem a diferença
+- Perspectiva Construtiva: Um fecho que inspira — razões concretas para optimismo, o que observar, como cada pessoa pode contribuir ou participar
 
 REGRAS:
 - IDIOMA: Escreve OBRIGATORIAMENTE em português de Portugal (PT-PT), nunca em português do Brasil nem em inglês.
@@ -89,18 +99,19 @@ REGRAS:
 - FORMATO: Apenas parágrafos de texto simples. Sem HTML, sem markdown, sem listas com bullets.
 - EXACTIDÃO: Indica apenas factos sustentados pelos artigos-fonte. Sem especulação.
 - ORIGINALIDADE: Escreve na tua própria voz. NÃO copies frases das fontes.
+- NUNCA termines um artigo com tom negativo ou de impotência. Encontra sempre uma nota de esperança, acção ou resiliência baseada nos factos.
 
-PONTUAÇÃO DE POSITIVIDADE (sê honesto mas procura o ângulo construtivo):
-- 5: Muito positiva (avanços, soluções a funcionar, progresso significativo)
-- 4: Positiva (desenvolvimentos construtivos, tendências encorajadoras)
-- 3: Neutra (equilibrada, situação complexa com desafios e respostas)
-- 2: Preocupante (problemas reais, mas com contexto e esforços de resposta notados)
-- 1: Crise (emergência aguda, mas ainda enquadrada com dignidade e contexto)
+PONTUAÇÃO DE POSITIVIDADE (sê honesto mas procura activamente o ângulo construtivo):
+- 5: Inspiradora (avanços notáveis, soluções a funcionar, histórias de solidariedade e coragem humana)
+- 4: Positiva (desenvolvimentos construtivos, tendências encorajadoras, progresso visível)
+- 3: Equilibrada (situação complexa com desafios E respostas, contexto construtivo)
+- 2: Desafiante (problemas reais, mas sempre com contexto de esforços de resposta e resiliência)
+- 1: Urgente (emergência aguda, enquadrada com dignidade, contexto e foco na resposta humana)
 
 Formato de saída (apenas JSON):
 {{
-  "title": "Título claro e informativo em português, enquadramento internacional",
-  "summary": "Uma frase-resumo construtiva em português (máx. 200 caracteres)",
+  "title": "Título claro e informativo em português, enquadramento construtivo e internacional",
+  "summary": "Uma frase-resumo construtiva e esperançosa em português (máx. 200 caracteres)",
   "content": "Texto completo do artigo em português com parágrafos...",
   "positivity_score": 3
 }}
@@ -246,27 +257,37 @@ def balance_articles(articles: List[Dict], limit: int) -> List[Dict]:
     Select a balanced subset of articles across different sources.
     Ensures no single source dominates the processing batch.
     Uses round-robin selection from each source.
+    Positive/constructive sources get extra weight to ensure more
+    constructive content in the final output.
     """
     if len(articles) <= limit:
         return articles
 
-    # Group by source
+    # Group by source, tracking which are positive sources
     by_source = {}
+    positive_sources = set()
     for a in articles:
         sid = a.get("source_id", "unknown")
         by_source.setdefault(sid, []).append(a)
+        if a.get("source_region") == "Positive":
+            positive_sources.add(sid)
 
-    # Round-robin: take one from each source until we hit the limit
+    # Round-robin: positive sources get extra picks per round
+    weight = config.POSITIVE_SOURCE_WEIGHT
     balanced = []
-    source_lists = list(by_source.values())
-    idx = 0
+    source_ids = list(by_source.keys())
+    source_lists = [by_source[sid] for sid in source_ids]
+    source_idx = [0] * len(source_lists)  # per-source index
     while len(balanced) < limit:
         added_this_round = False
-        for source_articles in source_lists:
-            if idx < len(source_articles) and len(balanced) < limit:
-                balanced.append(source_articles[idx])
-                added_this_round = True
-        idx += 1
+        for i, source_articles in enumerate(source_lists):
+            # Positive sources get 'weight' picks per round
+            picks = weight if source_ids[i] in positive_sources else 1
+            for _ in range(picks):
+                if source_idx[i] < len(source_articles) and len(balanced) < limit:
+                    balanced.append(source_articles[source_idx[i]])
+                    source_idx[i] += 1
+                    added_this_round = True
         if not added_this_round:
             break
 

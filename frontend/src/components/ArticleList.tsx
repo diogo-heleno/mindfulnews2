@@ -7,7 +7,7 @@ import FilterBar from './FilterBar'
 
 export default function ArticleList() {
   const [articles, setArticles] = useState<Article[]>([])
-  const [filter, setFilter] = useState<FilterMode>('balanced')
+  const [filter, setFilter] = useState<FilterMode>('uplifting')
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(0)
   const [hasMore, setHasMore] = useState(true)

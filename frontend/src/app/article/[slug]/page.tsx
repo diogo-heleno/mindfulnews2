@@ -97,6 +97,32 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             ))}
           </div>
 
+          {/* Mindful Reflection Moment */}
+          <div className="mt-12 pt-8 border-t border-sage-100">
+            <div className="bg-gradient-to-br from-sage-50 to-cream-50 rounded-xl p-6 md:p-8">
+              <div className="flex items-start space-x-3">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-sage-100 flex-shrink-0 mt-0.5">
+                  <svg className="w-4 h-4 text-sage-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </span>
+                <div>
+                  <h3 className="font-serif text-lg font-semibold text-sage-800 mb-2">
+                    Momento de Reflexao
+                  </h3>
+                  <p className="text-stone-600 leading-relaxed text-sm">
+                    {article.positivity_score >= 4
+                      ? 'Esta historia mostra o que de melhor a humanidade tem para oferecer. Que accoes ou atitudes desta noticia o podem inspirar no seu dia-a-dia?'
+                      : article.positivity_score >= 3
+                        ? 'O mundo e complexo, mas tambem esta cheio de pessoas a trabalhar por solucoes. O que retira de mais construtivo desta leitura?'
+                        : 'Mesmo perante desafios, existem sempre pessoas e comunidades a agir. Onde encontra sinais de esperanca nesta historia?'
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Sources */}
           {article.original_links && article.original_links.length > 0 && (
             <div className="mt-12 pt-8 border-t border-stone-100">
