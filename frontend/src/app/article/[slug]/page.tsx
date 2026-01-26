@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   
   if (!article) {
     return {
-      title: 'Article Not Found',
+      title: 'Artigo Não Encontrado',
     }
   }
 
@@ -101,7 +101,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {article.original_links && article.original_links.length > 0 && (
             <div className="mt-12 pt-8 border-t border-stone-100">
               <h2 className="text-sm font-medium text-stone-500 uppercase tracking-wider mb-4">
-                Original Sources
+                Fontes Originais
               </h2>
               <ul className="space-y-2">
                 {article.original_links.map((link, index) => (
@@ -132,7 +132,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
               </svg>
-              <span>Back to all articles</span>
+              <span>Voltar a todos os artigos</span>
             </Link>
           </div>
         </div>

@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     <title>${feedTitle}</title>
     <link>${siteConfig.url}</link>
     <description>${feedDescription}</description>
-    <language>en-us</language>
+    <language>pt-pt</language>
     <lastBuildDate>${buildDate}</lastBuildDate>
     <generator>Mindful News v2.0</generator>
     <docs>https://www.rssboard.org/rss-specification</docs>
@@ -68,11 +68,11 @@ export async function GET(request: NextRequest) {
 function getFilterDescription(filter: FilterMode): string {
   switch (filter) {
     case 'uplifting':
-      return 'Uplifting and positive news from around the world. Only articles scored 4-5 for positivity.'
+      return 'Notícias positivas e inspiradoras de todo o mundo. Apenas artigos com pontuação de positividade 4-5.'
     case 'balanced':
-      return 'Balanced news coverage with a constructive tone. Articles scored 3-5 for positivity.'
+      return 'Cobertura noticiosa equilibrada com tom construtivo. Artigos com pontuação de positividade 3-5.'
     case 'all':
-      return 'Complete news coverage including all topics. All positivity scores included.'
+      return 'Cobertura completa incluindo todos os temas. Todas as pontuações de positividade incluídas.'
     default:
       return siteConfig.description
   }

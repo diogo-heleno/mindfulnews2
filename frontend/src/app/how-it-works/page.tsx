@@ -1,15 +1,15 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'How It Works',
-  description: 'Learn how Mindful News collects, processes, and presents news in a calm, constructive way.',
+  title: 'Como Funciona',
+  description: 'Saiba como o Mindful News recolhe, processa e apresenta notícias de forma calma e construtiva.',
 }
 
 const steps = [
   {
     number: '01',
-    title: 'Collection',
-    description: 'We gather articles from trusted international news sources via RSS feeds. Sources include major outlets from Europe, Asia, Africa, the Americas, and dedicated positive news platforms.',
+    title: 'Recolha',
+    description: 'Recolhemos artigos de fontes noticiosas internacionais de confiança através de feeds RSS. As fontes incluem meios de comunicação da Europa, Ásia, África, Américas e plataformas dedicadas a notícias positivas.',
     icon: (
       <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
@@ -18,8 +18,8 @@ const steps = [
   },
   {
     number: '02',
-    title: 'Clustering',
-    description: 'Related articles are grouped together using AI. This means major stories are presented in context, not as isolated headlines. You see the bigger picture.',
+    title: 'Agrupamento',
+    description: 'Os artigos relacionados são agrupados por tema com recurso a inteligência artificial. Isto permite que as grandes notícias sejam apresentadas em contexto, e não como títulos isolados. O leitor vê o panorama completo.',
     icon: (
       <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -28,8 +28,8 @@ const steps = [
   },
   {
     number: '03',
-    title: 'Rewriting',
-    description: 'Each cluster is synthesized into a coherent article using Claude AI. The AI summarizes facts, removes sensationalism, and rewrites in a calm, constructive tone—without adding editorial opinion.',
+    title: 'Reescrita',
+    description: 'Cada grupo de artigos é sintetizado num texto coerente pela IA Claude. A IA resume os factos, remove o sensacionalismo e reescreve num tom calmo e construtivo — sem acrescentar opinião editorial.',
     icon: (
       <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -38,8 +38,8 @@ const steps = [
   },
   {
     number: '04',
-    title: 'Scoring',
-    description: 'Each article receives a positivity score from 1-5. This allows you to filter your news experience—from uplifting only to complete coverage. You choose your comfort level.',
+    title: 'Classificação',
+    description: 'Cada artigo recebe uma pontuação de positividade de 1 a 5. Isto permite filtrar a experiência de leitura — desde apenas notícias positivas até cobertura completa. O leitor escolhe o seu nível de conforto.',
     icon: (
       <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -48,8 +48,8 @@ const steps = [
   },
   {
     number: '05',
-    title: 'Delivery',
-    description: 'Articles are published to the website and RSS feed. The pipeline runs automatically every 6 hours, keeping you informed without the urgency of real-time news.',
+    title: 'Publicação',
+    description: 'Os artigos são publicados no site e no feed RSS. O processo é executado automaticamente a cada seis horas, mantendo-o informado sem a urgência das notícias em tempo real.',
     icon: (
       <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -63,10 +63,10 @@ export default function HowItWorksPage() {
     <div className="container-wide py-12 md:py-20">
       <header className="max-w-3xl mb-16">
         <h1 className="font-serif text-4xl md:text-5xl font-medium text-stone-800 mb-4">
-          How It Works
+          Como Funciona
         </h1>
         <p className="text-xl text-stone-600">
-          The journey from raw news to mindful reading.
+          O percurso da notícia em bruto até à leitura consciente.
         </p>
       </header>
 
@@ -78,7 +78,7 @@ export default function HowItWorksPage() {
             {index < steps.length - 1 && (
               <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-sage-200 -translate-y-1/2 z-0" />
             )}
-            
+
             <div className="relative z-10 bg-white rounded-xl p-6 shadow-sm border border-stone-100 h-full">
               {/* Number */}
               <div className="flex items-center space-x-3 mb-4">
@@ -89,7 +89,7 @@ export default function HowItWorksPage() {
                   {step.icon}
                 </div>
               </div>
-              
+
               {/* Content */}
               <h3 className="font-serif text-lg font-medium text-stone-800 mb-2">
                 {step.title}
@@ -105,24 +105,27 @@ export default function HowItWorksPage() {
       {/* Philosophy Section */}
       <section className="mt-20 max-w-3xl">
         <h2 className="font-serif text-2xl font-medium text-stone-800 mb-6">
-          Our approach
+          A nossa abordagem
         </h2>
-        
+
         <div className="space-y-6 text-stone-700 leading-relaxed">
           <p>
-            We don&apos;t aim to break news first. We aim to help you understand it better.
-          </p>
-          
-          <p>
-            The goal is not to filter reality, but to present it in a way that allows 
-            for thoughtful engagement rather than reactive stress. Facts are preserved, 
-            context is added, and sensationalism is removed.
+            Não pretendemos dar notícias em primeira mão. Pretendemos ajudá-lo
+            a compreendê-las melhor.
           </p>
 
           <p>
-            By clustering related stories, we help you see how different sources cover 
-            the same events. By assigning positivity scores, we give you control over 
-            your news diet. By rewriting in a calm tone, we respect your mental wellbeing.
+            O objectivo não é filtrar a realidade, mas apresentá-la de uma forma
+            que permita um envolvimento ponderado em vez de stress reactivo.
+            Os factos são preservados, o contexto é acrescentado e o sensacionalismo
+            é removido.
+          </p>
+
+          <p>
+            Ao agrupar notícias relacionadas, ajudamos a ver como diferentes fontes
+            cobrem os mesmos acontecimentos. Ao atribuir pontuações de positividade,
+            damos controlo sobre a dieta informativa. Ao reescrever num tom calmo,
+            respeitamos o bem-estar mental do leitor.
           </p>
         </div>
 
@@ -135,15 +138,15 @@ export default function HowItWorksPage() {
               </svg>
             </div>
             <div>
-              <h3 className="font-medium text-stone-800 mb-1">Subscribe via RSS</h3>
+              <h3 className="font-medium text-stone-800 mb-1">Subscrever via RSS</h3>
               <p className="text-sm text-stone-600 mb-3">
-                Follow Mindful News in your favorite RSS reader. Filter by positivity level.
+                Acompanhe o Mindful News no seu leitor RSS preferido. Filtre por nível de positividade.
               </p>
-              <a 
-                href="/feed.xml" 
+              <a
+                href="/feed.xml"
                 className="text-sm font-medium text-ocean-600 hover:text-ocean-700"
               >
-                Get the RSS feed →
+                Obter o feed RSS →
               </a>
             </div>
           </div>
