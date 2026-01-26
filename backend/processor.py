@@ -20,27 +20,29 @@ client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
 # Prompts
 # ===================
 
-CLUSTERING_PROMPT = """You are organizing news articles into thematic clusters for a calm, mindful news service.
+CLUSTERING_PROMPT = """You are a news editor for Mindful News, an internationally-focused constructive news service. Your job is to organize articles into thematic clusters that will each become a single synthesized article.
 
-Given these article titles, group them by theme. Each cluster should have 2-7 related articles.
+Given these article titles from sources worldwide, group them by global theme. Each cluster should have 2-7 related articles.
 
-Categories to use:
+Categories (choose the most fitting):
 - Diplomacy & Peace
-- Conflict & Crisis
 - Environment & Climate
 - Health & Wellbeing
 - Social Progress
 - Science & Innovation
 - Economy & Trade
 - Culture & Arts
-- Positive News
+- Solutions & Good News
 - World Affairs
 
-Rules:
-1. Group by THEME, not geography
-2. Positive/uplifting articles should go to "Positive News" category
-3. Create a "World Affairs" cluster for miscellaneous items
-4. Each article can only be in ONE cluster
+IMPORTANT rules:
+1. Group by GLOBAL THEME, never by country or region. A cluster about "climate action" should combine articles from different continents.
+2. PRIORITIZE international stories over local/national ones. Skip articles that are purely local news unless they have global relevance.
+3. Articles about solutions, progress, innovation, or positive developments should go to "Solutions & Good News".
+4. Avoid creating clusters dominated by a single country. Mix geographies within each theme.
+5. Skip articles that are sports scores, entertainment gossip, or purely domestic politics of any single country.
+6. Each article can only be in ONE cluster.
+7. Aim for 6-10 clusters total with good thematic variety.
 
 Output JSON only, no explanation:
 [
@@ -54,29 +56,41 @@ Article titles:
 {titles}"""
 
 
-SYNTHESIS_PROMPT = """You are a calm, mindful news writer. Your task is to synthesize these related articles into ONE coherent news piece.
+SYNTHESIS_PROMPT = """You are a constructive journalist for Mindful News, an international news service that practices constructive journalism. You don't just report what went wrong — you provide context, nuance, and highlight what's being done about it.
 
-Guidelines:
-1. TONE: Calm, clear, constructive. No sensationalism or alarmism.
-2. FACTS: Accurate summary of key facts. No speculation.
-3. STRUCTURE: 
-   - Opening paragraph with the main story
-   - 2-3 paragraphs of context and details
-   - Closing with constructive perspective or next steps
-4. LENGTH: At least {min_chars} characters
-5. FORMAT: Plain text with paragraph breaks. No HTML tags, no markdown.
+Your task: synthesize these related articles into ONE original, well-written news piece.
 
-Also assess the positivity of this news:
-- 5: Very positive (solutions, progress, hope)
-- 4: Positive (constructive, encouraging)
-- 3: Neutral (balanced, factual)
-- 2: Slightly negative (concerning but informative)
-- 1: Negative (conflict, disaster, crisis)
+CONSTRUCTIVE JOURNALISM PRINCIPLES:
+1. REFRAME, don't just copy. Find the deeper story — the causes, the responses, the human impact, the path forward.
+2. SOLUTIONS FOCUS: Even for difficult stories, include what people, organizations, or governments are doing to address the situation. What's working? What's being tried?
+3. CONTEXT: Help readers understand WHY this matters globally. Connect dots between regions. Provide historical context.
+4. CALM TONE: Write like a thoughtful, well-informed friend explaining the news. No alarmism, no clickbait, no doom framing.
+5. GLOBAL PERSPECTIVE: Frame stories internationally, not from any single country's viewpoint.
+6. EMPOWERMENT: Leave readers feeling informed and empowered, not anxious or helpless.
 
-Output format (JSON):
+STRUCTURE:
+- Opening: The key development, clearly and calmly stated
+- Context: 2-3 paragraphs with background, causes, and global significance
+- Response: What's being done — actions, solutions, initiatives
+- Outlook: A constructive closing — what to watch for, reasons for cautious optimism, or how people can engage
+
+RULES:
+- LENGTH: At least {min_chars} characters
+- FORMAT: Plain text paragraphs only. No HTML, no markdown, no bullet points.
+- ACCURACY: Only state facts supported by the source articles. No speculation.
+- ORIGINALITY: Write in your own voice. Do NOT copy sentences from the sources.
+
+POSITIVITY SCORE (be honest but look for the constructive angle):
+- 5: Very positive (breakthroughs, solutions working, major progress)
+- 4: Positive (constructive developments, encouraging trends)
+- 3: Neutral (balanced, complex situation with both challenges and responses)
+- 2: Concerning (real problems, but with context and response efforts noted)
+- 1: Crisis (acute emergency, but still framed with dignity and context)
+
+Output format (JSON only):
 {{
-  "title": "Clear, informative headline",
-  "summary": "One sentence summary (max 200 chars)",
+  "title": "Clear, internationally-framed headline",
+  "summary": "One constructive sentence summary (max 200 chars)",
   "content": "Full article text with paragraphs...",
   "positivity_score": 3
 }}
@@ -217,19 +231,55 @@ def get_latest_date(articles: List[Dict]) -> datetime:
     return max(dates) if dates else datetime.now(timezone.utc)
 
 
+def balance_articles(articles: List[Dict], limit: int) -> List[Dict]:
+    """
+    Select a balanced subset of articles across different sources.
+    Ensures no single source dominates the processing batch.
+    Uses round-robin selection from each source.
+    """
+    if len(articles) <= limit:
+        return articles
+
+    # Group by source
+    by_source = {}
+    for a in articles:
+        sid = a.get("source_id", "unknown")
+        by_source.setdefault(sid, []).append(a)
+
+    # Round-robin: take one from each source until we hit the limit
+    balanced = []
+    source_lists = list(by_source.values())
+    idx = 0
+    while len(balanced) < limit:
+        added_this_round = False
+        for source_articles in source_lists:
+            if idx < len(source_articles) and len(balanced) < limit:
+                balanced.append(source_articles[idx])
+                added_this_round = True
+        idx += 1
+        if not added_this_round:
+            break
+
+    print(f"  📊 Balanced: {len(balanced)} articles from {len(by_source)} sources")
+    return balanced
+
+
 def process_articles() -> Tuple[int, int]:
     """
     Main processing function.
     Fetches unprocessed articles, clusters them, synthesizes, and saves.
     Returns (processed_count, created_count).
     """
-    # Get unprocessed articles
-    raw_articles = database.get_unprocessed_articles(limit=config.MAX_ARTICLES)
-    
+    # Get unprocessed articles (fetch more than needed for balancing)
+    raw_articles = database.get_unprocessed_articles(limit=config.MAX_ARTICLES * 3)
+
     if not raw_articles:
         print("\n📭 No unprocessed articles found")
         return 0, 0
-    
+
+    # Balance across sources to prevent any single source from dominating
+    raw_articles = balance_articles(raw_articles, config.MAX_ARTICLES)
+
     print(f"\n📰 Processing {len(raw_articles)} articles...")
     
     # Cluster articles
