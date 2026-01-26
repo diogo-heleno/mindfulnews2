@@ -21,18 +21,27 @@ export function formatRSSDate(dateString: string): string {
 
 // Get positivity label
 export function getPositivityLabel(score: number): string {
-  if (score >= 5) return 'Muito Positiva'
+  if (score >= 5) return 'Inspiradora'
   if (score >= 4) return 'Positiva'
-  if (score >= 3) return 'Neutra'
-  if (score >= 2) return 'Preocupante'
-  return 'Negativa'
+  if (score >= 3) return 'Equilibrada'
+  if (score >= 2) return 'Desafiante'
+  return 'Urgente'
 }
 
 // Get positivity color class
 export function getPositivityColor(score: number): string {
-  if (score >= 4) return 'text-sage-600 bg-sage-100'
-  if (score >= 3) return 'text-ocean-600 bg-ocean-100'
-  return 'text-stone-600 bg-stone-200'
+  if (score >= 5) return 'text-sage-700 bg-sage-100 border border-sage-200'
+  if (score >= 4) return 'text-sage-600 bg-sage-50'
+  if (score >= 3) return 'text-ocean-600 bg-ocean-50'
+  return 'text-stone-600 bg-stone-100'
+}
+
+// Get positivity icon indicator (small visual cue)
+export function getPositivityIndicator(score: number): string {
+  if (score >= 5) return 'sun'     // inspiradora
+  if (score >= 4) return 'leaf'    // positiva
+  if (score >= 3) return 'scale'   // equilibrada
+  return 'compass'                  // desafiante/urgente
 }
 
 // Truncate text
@@ -51,7 +60,7 @@ export function generateExcerpt(content: string, maxLength: number = 200): strin
 // Site metadata
 export const siteConfig = {
   name: 'Mindful News',
-  description: 'Um resumo de notícias calmo e construtivo — sem sensacionalismo, internacional, consciente.',
+  description: 'O melhor da humanidade, todos os dias. Noticias internacionais com clareza, esperanca e perspectiva construtiva.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://mindfulnews.media',
   author: 'Diogo Heleno',
 }

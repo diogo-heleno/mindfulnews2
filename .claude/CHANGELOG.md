@@ -2,6 +2,28 @@
 
 All notable changes to Mindful News v2.
 
+## [2026-01-26] - Mindful Experience Enhancement
+
+### Changed
+- **Synthesis prompt**: Strengthened constructive journalism principles with explicit focus on human stories, resilience, hope, and actionable insights. Articles now always end with a note of empowerment.
+- **Clustering prompt**: Added "Historias Humanas" category for stories of kindness, solidarity, and courage. Clustering now actively seeks constructive angles and ensures at least one positive cluster per batch.
+- **Positivity scale**: Updated terminology from negative framing (Negativa/Preocupante) to constructive framing (Urgente/Desafiante/Equilibrada/Positiva/Inspiradora).
+- **Default filter**: Changed from "balanced" (score >= 3) to "uplifting" (score >= 4) so readers see the best of humanity first.
+- **FilterBar**: Updated labels ("Inspiradoras", not "Positivas") and descriptions to be more mindful and inviting.
+- **Homepage tagline**: "O melhor da humanidade, todos os dias."
+- **Site description**: Updated to reflect the positive mission.
+- **Source balancing**: Positive/constructive news sources now get 2x weight in the round-robin article selection algorithm.
+
+### Added
+- **5 new constructive news sources**: Good News Network, The Optimist Daily, Global Citizen, Borgen Magazine, and Guardian Global Development (total: 27 sources, 11 positive).
+- **"Destaque Positivo" section**: Homepage now features a prominent highlight of the most inspiring recent article, displayed above the article list.
+- **"Momento de Reflexao" section**: Each article page now ends with a mindful reflection prompt that adapts to the article's positivity score, encouraging readers to find hope and actionable takeaways.
+- **Positivity visual indicators**: Article cards now show subtle sun (inspirational) or heart (positive) icons next to category badges for highly rated articles.
+- **`getPositivityIndicator` utility**: New helper function for mapping positivity scores to visual icons.
+- **`getMostInspiringArticle` query**: New Supabase query to fetch the highest-positivity most recent article.
+- **`DailyHighlight` component**: New homepage component for the positive article spotlight.
+- **`POSITIVE_SOURCE_WEIGHT` config**: Configurable weight multiplier for constructive news sources in the balancing algorithm (default: 2).
+
 ## [2026-01-26] - Deployment Fixes
 
 ### Fixed

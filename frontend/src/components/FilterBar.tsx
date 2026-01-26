@@ -15,18 +15,18 @@ interface FilterBarProps {
 const filters: { id: FilterMode; label: string; description: string }[] = [
   {
     id: 'uplifting',
-    label: 'Positivas',
-    description: 'Notícias positivas e focadas em soluções',
+    label: 'Inspiradoras',
+    description: 'O melhor da humanidade: soluções, progresso e solidariedade',
   },
   {
     id: 'balanced',
     label: 'Equilibradas',
-    description: 'Cobertura positiva e neutra',
+    description: 'Panorama construtivo do que se passa no mundo',
   },
   {
     id: 'all',
     label: 'Todas',
-    description: 'Cobertura completa',
+    description: 'Cobertura completa, sempre com contexto e esperança',
   },
 ]
 
@@ -35,9 +35,9 @@ export default function FilterBar({ currentFilter, onFilterChange, counts }: Fil
     <div className="bg-white rounded-xl shadow-sm border border-stone-100 p-4 mb-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-sm font-medium text-stone-800">Filtrar Notícias</h2>
+          <h2 className="text-sm font-medium text-stone-800">A sua leitura</h2>
           <p className="text-xs text-stone-500 mt-0.5">
-            Escolha a sua experiência de leitura
+            Escolha como quer ver o mundo hoje
           </p>
         </div>
         

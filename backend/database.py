@@ -64,14 +64,18 @@ def insert_raw_article(
 
 
 def get_unprocessed_articles(limit: int = 100) -> List[Dict]:
-    """Get unprocessed raw articles."""
+    """Get unprocessed raw articles with source region info."""
     client = get_client()
     response = client.table("raw_articles")\
-        .select("*")\
+        .select("*, sources(region)")\
         .eq("processed", False)\
         .order("published_at", desc=True)\
         .limit(limit)\
         .execute()
+    # Flatten the source region into the article dict
+    for article in response.data:
+        source_info = article.pop("sources", None)
+        article["source_region"] = source_info.get("region", "Unknown") if source_info else "Unknown"
     return response.data
 
 

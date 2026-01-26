@@ -90,6 +90,25 @@ export async function getCategories(): Promise<string[]> {
   return categories
 }
 
+// Get the most inspiring recent article (highest positivity, most recent)
+export async function getMostInspiringArticle(): Promise<Article | null> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('*')
+    .gte('positivity_score', 4)
+    .order('positivity_score', { ascending: false })
+    .order('published_at', { ascending: false })
+    .limit(1)
+    .single()
+
+  if (error) {
+    console.error('Error fetching inspiring article:', error)
+    return null
+  }
+
+  return data
+}
+
 // Get article count by filter
 export async function getArticleCount(filter: FilterMode = 'balanced'): Promise<number> {
   const { count, error } = await supabase

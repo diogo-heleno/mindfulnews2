@@ -47,6 +47,7 @@ CATEGORIES = [
     "Ciência e Inovação",
     "Economia e Comércio",
     "Cultura e Artes",
+    "Histórias Humanas",
     "Soluções e Boas Notícias",
     "Assuntos Globais"
 ]
@@ -54,8 +55,14 @@ CATEGORIES = [
 # ===================
 # Positivity Scale
 # ===================
-# 5: Muito positiva - inspiradora, focada em soluções, esperançosa
-# 4: Positiva - construtiva, encorajadora
-# 3: Neutra - equilibrada, reportagem factual
-# 2: Ligeiramente negativa - preocupante mas informativa
-# 1: Negativa - conflitos, catástrofes, crises
+# 5: Inspiradora - avanços notáveis, solidariedade, coragem humana
+# 4: Positiva - desenvolvimentos construtivos, progresso visível
+# 3: Equilibrada - situação complexa com desafios e respostas
+# 2: Desafiante - problemas reais, com contexto de resiliência
+# 1: Urgente - emergência, enquadrada com dignidade e foco na resposta
+
+# ===================
+# Source Weighting
+# ===================
+# Positive sources get extra weight in the balancing algorithm
+POSITIVE_SOURCE_WEIGHT = int(os.getenv("POSITIVE_SOURCE_WEIGHT", "2"))
