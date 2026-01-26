@@ -1,15 +1,16 @@
 import { format, formatDistanceToNow, parseISO } from 'date-fns'
+import { pt } from 'date-fns/locale'
 
 // Format date for display
 export function formatDate(dateString: string): string {
   const date = parseISO(dateString)
-  return format(date, 'MMMM d, yyyy')
+  return format(date, "d 'de' MMMM 'de' yyyy", { locale: pt })
 }
 
 // Format relative time
 export function formatRelativeTime(dateString: string): string {
   const date = parseISO(dateString)
-  return formatDistanceToNow(date, { addSuffix: true })
+  return formatDistanceToNow(date, { addSuffix: true, locale: pt })
 }
 
 // Format date for RSS
@@ -20,11 +21,11 @@ export function formatRSSDate(dateString: string): string {
 
 // Get positivity label
 export function getPositivityLabel(score: number): string {
-  if (score >= 5) return 'Very Positive'
-  if (score >= 4) return 'Positive'
-  if (score >= 3) return 'Neutral'
-  if (score >= 2) return 'Concerning'
-  return 'Negative'
+  if (score >= 5) return 'Muito Positiva'
+  if (score >= 4) return 'Positiva'
+  if (score >= 3) return 'Neutra'
+  if (score >= 2) return 'Preocupante'
+  return 'Negativa'
 }
 
 // Get positivity color class
@@ -50,7 +51,7 @@ export function generateExcerpt(content: string, maxLength: number = 200): strin
 // Site metadata
 export const siteConfig = {
   name: 'Mindful News',
-  description: 'A calm, constructive news digest — non-sensational, international, mindful.',
+  description: 'Um resumo de notícias calmo e construtivo — sem sensacionalismo, internacional, consciente.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://mindfulnews.media',
   author: 'Diogo Heleno',
 }

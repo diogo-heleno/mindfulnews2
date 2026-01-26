@@ -30,19 +30,19 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm text-stone-600 leading-relaxed">
-              A calmer way to stay informed. International news rewritten with clarity, 
-              balance, and a constructive perspective.
+              Uma forma mais calma de se manter informado. Notícias internacionais
+              reescritas com clareza, equilíbrio e uma perspectiva construtiva.
             </p>
           </div>
 
           {/* Navigation */}
           <div>
-            <h3 className="font-medium text-stone-800 mb-4">Navigation</h3>
+            <h3 className="font-medium text-stone-800 mb-4">Navegação</h3>
             <ul className="space-y-2">
               {[
-                { name: 'Home', href: '/' },
-                { name: 'About', href: '/about' },
-                { name: 'How It Works', href: '/how-it-works' },
+                { name: 'Início', href: '/' },
+                { name: 'Sobre', href: '/about' },
+                { name: 'Como Funciona', href: '/how-it-works' },
                 { name: 'FAQ', href: '/faq' },
               ].map((link) => (
                 <li key={link.name}>
@@ -59,7 +59,7 @@ export default function Footer() {
 
           {/* Subscribe */}
           <div>
-            <h3 className="font-medium text-stone-800 mb-4">Subscribe</h3>
+            <h3 className="font-medium text-stone-800 mb-4">Subscrever</h3>
             <ul className="space-y-2">
               <li>
                 <Link 
@@ -93,10 +93,10 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-stone-200">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm text-stone-500">
-              © {currentYear} Mindful News. Independent project • No ads • No tracking
+              © {currentYear} Mindful News. Projecto independente • Sem anúncios • Sem rastreamento
             </p>
             <p className="text-sm text-stone-500">
-              Stay centered. Stay connected. Stay informed.
+              Mantenha-se centrado. Mantenha-se ligado. Mantenha-se informado.
             </p>
           </div>
         </div>

@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'About',
-  description: 'Learn about Mindful News and our mission to offer a calmer way to stay informed.',
+  title: 'Sobre',
+  description: 'Conheça o Mindful News e a nossa missão de oferecer uma forma mais calma de se manter informado.',
 }
 
 export default function AboutPage() {
@@ -10,102 +10,104 @@ export default function AboutPage() {
     <div className="container-narrow py-12 md:py-20">
       <header className="mb-12">
         <h1 className="font-serif text-4xl md:text-5xl font-medium text-stone-800 mb-4">
-          About Mindful News
+          Sobre o Mindful News
         </h1>
         <p className="text-xl text-stone-600">
-          A calmer way to stay informed.
+          Uma forma mais calma de se manter informado.
         </p>
       </header>
 
       <div className="prose prose-lg prose-stone max-w-none">
         <p className="text-lg leading-relaxed text-stone-700">
-          Mindful News is a personal project with one goal: to offer a calmer, more 
-          constructive way to read world news.
+          O Mindful News é um projecto pessoal com um objectivo: oferecer uma forma
+          mais calma e construtiva de ler notícias internacionais.
         </p>
 
         <h2 className="font-serif text-2xl font-medium text-stone-800 mt-12 mb-4">
-          Why we built this
+          Porquê este projecto
         </h2>
-        
+
         <p className="text-stone-700 leading-relaxed">
-          In a world where news often feels fast, overwhelming, or alarmist, we wanted 
-          to try something different. Traditional news feeds can easily trigger negative 
-          emotions and stress through:
+          Num mundo em que as notícias são frequentemente rápidas, avassaladoras ou
+          alarmistas, quisemos experimentar algo diferente. Os fluxos de notícias
+          tradicionais podem facilmente desencadear emoções negativas e stress através de:
         </p>
 
         <ul className="text-stone-700 space-y-2 my-6">
-          <li>Excessive sensationalism and clickbait</li>
-          <li>Catastrophic tone and fear-based framing</li>
-          <li>Focus on conflict and polarisation</li>
-          <li>Repetitive cycles of outrage</li>
+          <li>Sensacionalismo excessivo e títulos enganadores</li>
+          <li>Tom catastrofista e enquadramento baseado no medo</li>
+          <li>Foco no conflito e na polarização</li>
+          <li>Ciclos repetitivos de indignação</li>
         </ul>
 
         <p className="text-stone-700 leading-relaxed">
-          We created Mindful News to filter out extreme negativity and rewrite articles 
-          in a clear, calm, and constructive tone. Our focus is not to break news first 
-          or provide sensational headlines—but to create space for thoughtful reading 
-          and reflection.
+          Criámos o Mindful News para filtrar a negatividade extrema e reescrever
+          artigos num tom claro, calmo e construtivo. O nosso objectivo não é dar
+          notícias em primeira mão ou fornecer títulos sensacionalistas — mas criar
+          espaço para uma leitura ponderada e reflexiva.
         </p>
 
         <h2 className="font-serif text-2xl font-medium text-stone-800 mt-12 mb-4">
-          What this is (and isn&apos;t)
+          O que é (e o que não é)
         </h2>
 
         <p className="text-stone-700 leading-relaxed">
-          This is not about &quot;fake good news&quot; or ignoring reality. It&apos;s about 
-          <strong> balanced, factual journalism</strong> presented in a way that respects 
-          your mental wellbeing.
+          Isto não é sobre &quot;boas notícias falsas&quot; ou ignorar a realidade. Trata-se de
+          <strong> jornalismo equilibrado e factual</strong>, apresentado de uma forma que
+          respeita o seu bem-estar mental.
         </p>
 
         <p className="text-stone-700 leading-relaxed">
-          We gather news from trusted international sources and process it using AI to:
+          Recolhemos notícias de fontes internacionais de confiança e processamo-las
+          com inteligência artificial para:
         </p>
 
         <ul className="text-stone-700 space-y-2 my-6">
-          <li>Group related stories for context</li>
-          <li>Rewrite in clear, non-alarmist language</li>
-          <li>Assign positivity scores so you can filter your reading experience</li>
-          <li>Preserve accuracy while removing sensationalism</li>
+          <li>Agrupar notícias relacionadas para contextualização</li>
+          <li>Reescrever numa linguagem clara e não alarmista</li>
+          <li>Atribuir pontuações de positividade para filtrar a experiência de leitura</li>
+          <li>Preservar a exactidão removendo o sensacionalismo</li>
         </ul>
 
         <h2 className="font-serif text-2xl font-medium text-stone-800 mt-12 mb-4">
-          The positivity filter
+          O filtro de positividade
         </h2>
 
         <p className="text-stone-700 leading-relaxed">
-          Each article is scored from 1 to 5 based on its tone:
+          Cada artigo é classificado de 1 a 5, com base no seu tom:
         </p>
 
         <ul className="text-stone-700 space-y-2 my-6">
-          <li><strong>5:</strong> Very positive—uplifting, solutions-focused</li>
-          <li><strong>4:</strong> Positive—constructive and encouraging</li>
-          <li><strong>3:</strong> Neutral—balanced, factual reporting</li>
-          <li><strong>2:</strong> Slightly negative—concerning but informative</li>
-          <li><strong>1:</strong> Negative—conflicts, crises, disasters</li>
+          <li><strong>5:</strong> Muito positiva — inspiradora, focada em soluções</li>
+          <li><strong>4:</strong> Positiva — construtiva e encorajadora</li>
+          <li><strong>3:</strong> Neutra — reportagem equilibrada e factual</li>
+          <li><strong>2:</strong> Ligeiramente negativa — preocupante mas informativa</li>
+          <li><strong>1:</strong> Negativa — conflitos, crises, catástrofes</li>
         </ul>
 
         <p className="text-stone-700 leading-relaxed">
-          You can choose to see only uplifting news (scores 4-5), balanced coverage 
-          (scores 3+), or the complete picture (all scores).
+          Pode optar por ver apenas notícias positivas (pontuações 4-5), cobertura
+          equilibrada (pontuações 3+) ou o panorama completo (todas as pontuações).
         </p>
 
         <h2 className="font-serif text-2xl font-medium text-stone-800 mt-12 mb-4">
-          Independent & transparent
+          Independente e transparente
         </h2>
 
         <p className="text-stone-700 leading-relaxed">
-          Mindful News is an independent project. There are no ads, no tracking, and 
-          no subscriptions. The code is open source on GitHub.
+          O Mindful News é um projecto independente. Não há anúncios, nem rastreamento,
+          nem subscrições pagas. O código é aberto e está disponível no GitHub.
         </p>
 
         <p className="text-stone-700 leading-relaxed mt-6">
-          This is a personal experiment—a proof of concept that we could build a better 
-          news experience for ourselves and anyone who may find it helpful.
+          Este é um projecto pessoal — uma prova de conceito de que é possível
+          construir uma melhor experiência de consumo de notícias, para nós e para
+          quem a considere útil.
         </p>
 
         <div className="mt-12 p-6 bg-sage-50 rounded-xl border border-sage-100">
           <p className="text-stone-700 italic text-center">
-            &quot;Mindful News—offering a calmer way to stay informed.&quot;
+            &quot;Mindful News — uma forma mais calma de se manter informado.&quot;
           </p>
         </div>
       </div>

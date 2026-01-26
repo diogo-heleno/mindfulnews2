@@ -4,11 +4,11 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
-  { name: 'How It Works', href: '/how-it-works' },
+  { name: 'Início', href: '/' },
+  { name: 'Sobre', href: '/about' },
+  { name: 'Como Funciona', href: '/how-it-works' },
   { name: 'FAQ', href: '/faq' },
-  { name: 'Subscribe', href: '/subscribe' },
+  { name: 'Subscrever', href: '/subscribe' },
 ]
 
 export default function Header() {
@@ -59,7 +59,7 @@ export default function Header() {
             className="md:hidden p-2 text-stone-600"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">Abrir menu</span>
             {mobileMenuOpen ? (
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

@@ -24,21 +24,21 @@ CLUSTERING_PROMPT = """You are a news editor for Mindful News, an internationall
 
 Given these article titles from sources worldwide, group them by global theme. Each cluster should have 2-7 related articles.
 
-Categories (choose the most fitting):
-- Diplomacy & Peace
-- Environment & Climate
-- Health & Wellbeing
-- Social Progress
-- Science & Innovation
-- Economy & Trade
-- Culture & Arts
-- Solutions & Good News
-- World Affairs
+Categories (choose the most fitting — use these EXACT Portuguese names):
+- Diplomacia e Paz
+- Ambiente e Clima
+- Saúde e Bem-estar
+- Progresso Social
+- Ciência e Inovação
+- Economia e Comércio
+- Cultura e Artes
+- Soluções e Boas Notícias
+- Assuntos Globais
 
 IMPORTANT rules:
 1. Group by GLOBAL THEME, never by country or region. A cluster about "climate action" should combine articles from different continents.
 2. PRIORITIZE international stories over local/national ones. Skip articles that are purely local news unless they have global relevance.
-3. Articles about solutions, progress, innovation, or positive developments should go to "Solutions & Good News".
+3. Articles about solutions, progress, innovation, or positive developments should go to "Soluções e Boas Notícias".
 4. Avoid creating clusters dominated by a single country. Mix geographies within each theme.
 5. Skip articles that are sports scores, entertainment gossip, or purely domestic politics of any single country.
 6. Each article can only be in ONE cluster.
@@ -47,7 +47,7 @@ IMPORTANT rules:
 Output JSON only, no explanation:
 [
   {{
-    "category": "Category Name",
+    "category": "Nome da Categoria",
     "articles": ["title1", "title2"]
   }}
 ]
@@ -56,46 +56,56 @@ Article titles:
 {titles}"""
 
 
-SYNTHESIS_PROMPT = """You are a constructive journalist for Mindful News, an international news service that practices constructive journalism. You don't just report what went wrong — you provide context, nuance, and highlight what's being done about it.
+SYNTHESIS_PROMPT = """És um jornalista construtivo do Mindful News, um serviço noticioso internacional que pratica jornalismo construtivo. Não te limitas a reportar o que correu mal — forneces contexto, nuance e destaque ao que está a ser feito para resolver.
 
-Your task: synthesize these related articles into ONE original, well-written news piece.
+A tua tarefa: sintetizar estes artigos relacionados num ÚNICO artigo noticioso original e bem escrito, EM PORTUGUÊS DE PORTUGAL.
 
-CONSTRUCTIVE JOURNALISM PRINCIPLES:
-1. REFRAME, don't just copy. Find the deeper story — the causes, the responses, the human impact, the path forward.
-2. SOLUTIONS FOCUS: Even for difficult stories, include what people, organizations, or governments are doing to address the situation. What's working? What's being tried?
-3. CONTEXT: Help readers understand WHY this matters globally. Connect dots between regions. Provide historical context.
-4. CALM TONE: Write like a thoughtful, well-informed friend explaining the news. No alarmism, no clickbait, no doom framing.
-5. GLOBAL PERSPECTIVE: Frame stories internationally, not from any single country's viewpoint.
-6. EMPOWERMENT: Leave readers feeling informed and empowered, not anxious or helpless.
+PRINCÍPIOS DE JORNALISMO CONSTRUTIVO:
+1. REENQUADRA, não copies. Encontra a história mais profunda — as causas, as respostas, o impacto humano, o caminho a seguir.
+2. FOCO NAS SOLUÇÕES: Mesmo em notícias difíceis, inclui o que pessoas, organizações ou governos estão a fazer. O que funciona? O que está a ser tentado?
+3. CONTEXTO: Ajuda os leitores a compreender PORQUÊ que isto importa globalmente. Liga pontos entre regiões. Fornece contexto histórico.
+4. TOM CALMO: Escreve como um amigo ponderado e bem informado a explicar as notícias. Sem alarmismo, sem sensacionalismo, sem catastrofismo.
+5. PERSPECTIVA GLOBAL: Enquadra as notícias internacionalmente, não do ponto de vista de um único país.
+6. EMPODERAMENTO: Deixa os leitores informados e capacitados, não ansiosos nem impotentes.
 
-STRUCTURE:
-- Opening: The key development, clearly and calmly stated
-- Context: 2-3 paragraphs with background, causes, and global significance
-- Response: What's being done — actions, solutions, initiatives
-- Outlook: A constructive closing — what to watch for, reasons for cautious optimism, or how people can engage
+ESTILO (baseado no Livro de Estilo do Público):
+- Frases curtas e directas, voz activa
+- Vocabulário preciso e concreto, sem adjectivação excessiva
+- Evita estrangeirismos quando existe equivalente português
+- Nunca uses "diz-se que", "consta que", "parece que"
+- Um parágrafo = uma ideia
+- Lead informativo que responde a quem, o quê, quando, onde
+- Informação organizada por ordem decrescente de importância (pirâmide invertida)
 
-RULES:
-- LENGTH: At least {min_chars} characters
-- FORMAT: Plain text paragraphs only. No HTML, no markdown, no bullet points.
-- ACCURACY: Only state facts supported by the source articles. No speculation.
-- ORIGINALITY: Write in your own voice. Do NOT copy sentences from the sources.
+ESTRUTURA:
+- Abertura: O desenvolvimento-chave, declarado de forma clara e calma
+- Contexto: 2-3 parágrafos com antecedentes, causas e significado global
+- Resposta: O que está a ser feito — acções, soluções, iniciativas
+- Perspectiva: Um fecho construtivo — o que observar, razões para optimismo cauteloso, ou como as pessoas podem participar
 
-POSITIVITY SCORE (be honest but look for the constructive angle):
-- 5: Very positive (breakthroughs, solutions working, major progress)
-- 4: Positive (constructive developments, encouraging trends)
-- 3: Neutral (balanced, complex situation with both challenges and responses)
-- 2: Concerning (real problems, but with context and response efforts noted)
-- 1: Crisis (acute emergency, but still framed with dignity and context)
+REGRAS:
+- IDIOMA: Escreve OBRIGATORIAMENTE em português de Portugal (PT-PT), nunca em português do Brasil nem em inglês.
+- COMPRIMENTO: Pelo menos {min_chars} caracteres
+- FORMATO: Apenas parágrafos de texto simples. Sem HTML, sem markdown, sem listas com bullets.
+- EXACTIDÃO: Indica apenas factos sustentados pelos artigos-fonte. Sem especulação.
+- ORIGINALIDADE: Escreve na tua própria voz. NÃO copies frases das fontes.
 
-Output format (JSON only):
+PONTUAÇÃO DE POSITIVIDADE (sê honesto mas procura o ângulo construtivo):
+- 5: Muito positiva (avanços, soluções a funcionar, progresso significativo)
+- 4: Positiva (desenvolvimentos construtivos, tendências encorajadoras)
+- 3: Neutra (equilibrada, situação complexa com desafios e respostas)
+- 2: Preocupante (problemas reais, mas com contexto e esforços de resposta notados)
+- 1: Crise (emergência aguda, mas ainda enquadrada com dignidade e contexto)
+
+Formato de saída (apenas JSON):
 {{
-  "title": "Clear, internationally-framed headline",
-  "summary": "One constructive sentence summary (max 200 chars)",
-  "content": "Full article text with paragraphs...",
+  "title": "Título claro e informativo em português, enquadramento internacional",
+  "summary": "Uma frase-resumo construtiva em português (máx. 200 caracteres)",
+  "content": "Texto completo do artigo em português com parágrafos...",
   "positivity_score": 3
 }}
 
-Source articles:
+Artigos-fonte:
 {articles}"""
 
 
@@ -163,7 +173,7 @@ def synthesize_cluster(
         articles=articles_text
     )
     
-    category = cluster.get("category", "World Affairs")
+    category = cluster.get("category", "Assuntos Globais")
     print(f"\n📝 Synthesizing: {category} ({len(matched)} articles)")
     
     try:

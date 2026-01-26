@@ -66,7 +66,7 @@ export default function ArticleList() {
         <div className="flex items-center justify-center py-20">
           <div className="animate-pulse flex flex-col items-center space-y-4">
             <div className="w-12 h-12 rounded-full bg-sage-200"></div>
-            <p className="text-stone-500">Loading articles...</p>
+            <p className="text-stone-500">A carregar artigos...</p>
           </div>
         </div>
       ) : articles.length === 0 ? (
@@ -76,8 +76,8 @@ export default function ArticleList() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
             </svg>
           </div>
-          <h3 className="font-serif text-xl text-stone-700 mb-2">No articles found</h3>
-          <p className="text-stone-500">Try a different filter or check back later.</p>
+          <h3 className="font-serif text-xl text-stone-700 mb-2">Nenhum artigo encontrado</h3>
+          <p className="text-stone-500">Experimente um filtro diferente ou volte mais tarde.</p>
         </div>
       ) : (
         <>
@@ -101,7 +101,7 @@ export default function ArticleList() {
           {moreArticles.length > 0 && (
             <>
               <h2 className="font-serif text-xl font-semibold text-stone-800 border-t-2 border-stone-800 pt-3 mb-6">
-                More stories
+                Mais notícias
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2">
                 {moreArticles.map((article) => (
@@ -125,10 +125,10 @@ export default function ArticleList() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    <span>Loading...</span>
+                    <span>A carregar...</span>
                   </span>
                 ) : (
-                  'Show more stories'
+                  'Mostrar mais notícias'
                 )}
               </button>
             </div>

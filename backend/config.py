@@ -40,22 +40,22 @@ CLAUDE_MODEL = "claude-sonnet-4-20250514"
 # Categories
 # ===================
 CATEGORIES = [
-    "Diplomacy & Peace",
-    "Environment & Climate",
-    "Health & Wellbeing",
-    "Social Progress",
-    "Science & Innovation",
-    "Economy & Trade",
-    "Culture & Arts",
-    "Solutions & Good News",
-    "World Affairs"
+    "Diplomacia e Paz",
+    "Ambiente e Clima",
+    "Saúde e Bem-estar",
+    "Progresso Social",
+    "Ciência e Inovação",
+    "Economia e Comércio",
+    "Cultura e Artes",
+    "Soluções e Boas Notícias",
+    "Assuntos Globais"
 ]
 
 # ===================
 # Positivity Scale
 # ===================
-# 5: Very positive - uplifting, solutions-focused, hopeful
-# 4: Positive - constructive, encouraging
-# 3: Neutral - balanced, factual reporting
-# 2: Slightly negative - concerning but informative
-# 1: Negative - conflicts, disasters, crises
+# 5: Muito positiva - inspiradora, focada em soluções, esperançosa
+# 4: Positiva - construtiva, encorajadora
+# 3: Neutra - equilibrada, reportagem factual
+# 2: Ligeiramente negativa - preocupante mas informativa
+# 1: Negativa - conflitos, catástrofes, crises

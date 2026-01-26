@@ -10,11 +10,11 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ['news', 'mindful', 'calm', 'constructive', 'international', 'positive'],
+  keywords: ['notícias', 'mindful', 'calmo', 'construtivo', 'internacional', 'positivo', 'jornalismo'],
   authors: [{ name: siteConfig.author }],
   openGraph: {
     type: 'website',
-    locale: 'en_US',
+    locale: 'pt_PT',
     url: siteConfig.url,
     siteName: siteConfig.name,
     title: siteConfig.name,
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   alternates: {
     types: {
       'application/rss+xml': [
-        { url: '/feed.xml', title: 'Mindful News RSS Feed' },
+        { url: '/feed.xml', title: 'Mindful News — Feed RSS' },
       ],
     },
   },
@@ -40,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="pt">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
