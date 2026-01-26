@@ -11,30 +11,30 @@ export default function ArticleList() {
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(0)
   const [hasMore, setHasMore] = useState(true)
-  
-  const ARTICLES_PER_PAGE = 12
+
+  const ARTICLES_PER_PAGE = 18
 
   // Fetch articles when filter or page changes
   useEffect(() => {
     async function fetchArticles() {
       setLoading(true)
-      
+
       const data = await getArticles(
         filter,
         ARTICLES_PER_PAGE,
         page * ARTICLES_PER_PAGE
       )
-      
+
       if (page === 0) {
         setArticles(data)
       } else {
         setArticles((prev) => [...prev, ...data])
       }
-      
+
       setHasMore(data.length === ARTICLES_PER_PAGE)
       setLoading(false)
     }
-    
+
     fetchArticles()
   }, [filter, page])
 
@@ -50,14 +50,15 @@ export default function ArticleList() {
     setPage((prev) => prev + 1)
   }
 
-  // Separate featured (first) article from the rest
-  const featuredArticle = articles[0]
-  const remainingArticles = articles.slice(1)
+  // Split articles into layout sections
+  const heroArticle = articles[0]
+  const secondaryArticles = articles.slice(1, 5)
+  const moreArticles = articles.slice(5)
 
   return (
     <div>
-      <FilterBar 
-        currentFilter={filter} 
+      <FilterBar
+        currentFilter={filter}
         onFilterChange={handleFilterChange}
       />
 
@@ -80,31 +81,43 @@ export default function ArticleList() {
         </div>
       ) : (
         <>
-          {/* Featured Article */}
-          {featuredArticle && (
+          {/* Hero Article */}
+          {heroArticle && (
             <div className="mb-8">
-              <ArticleCard article={featuredArticle} featured />
+              <ArticleCard article={heroArticle} variant="hero" />
             </div>
           )}
 
-          {/* Article Grid */}
-          {remainingArticles.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {remainingArticles.map((article, index) => (
-                <div key={article.id} style={{ animationDelay: `${index * 50}ms` }}>
-                  <ArticleCard article={article} />
-                </div>
+          {/* Secondary Stories Row */}
+          {secondaryArticles.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+              {secondaryArticles.map((article) => (
+                <ArticleCard key={article.id} article={article} variant="headline" />
               ))}
             </div>
           )}
 
+          {/* More Stories */}
+          {moreArticles.length > 0 && (
+            <>
+              <h2 className="font-serif text-xl font-semibold text-stone-800 border-t-2 border-stone-800 pt-3 mb-6">
+                More stories
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2">
+                {moreArticles.map((article) => (
+                  <ArticleCard key={article.id} article={article} variant="compact" />
+                ))}
+              </div>
+            </>
+          )}
+
           {/* Load More */}
           {hasMore && (
-            <div className="mt-12 text-center">
+            <div className="mt-12 text-center border-t border-stone-200 pt-8">
               <button
                 onClick={loadMore}
                 disabled={loading}
-                className="px-8 py-3 bg-white border border-stone-200 rounded-full text-stone-700 font-medium hover:border-sage-400 hover:text-sage-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-8 py-3 bg-sage-600 text-white rounded font-medium hover:bg-sage-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <span className="flex items-center space-x-2">
@@ -115,7 +128,7 @@ export default function ArticleList() {
                     <span>Loading...</span>
                   </span>
                 ) : (
-                  'Load more articles'
+                  'Show more stories'
                 )}
               </button>
             </div>
