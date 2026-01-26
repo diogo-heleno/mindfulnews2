@@ -44,10 +44,10 @@ Rules:
 
 Output JSON only, no explanation:
 [
-  {
+  {{
     "category": "Category Name",
     "articles": ["title1", "title2"]
-  }
+  }}
 ]
 
 Article titles:
