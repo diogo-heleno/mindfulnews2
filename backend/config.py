@@ -27,6 +27,9 @@ FETCH_HOURS = int(os.getenv("FETCH_HOURS", "12"))
 # Maximum raw articles to process per run
 MAX_ARTICLES = int(os.getenv("MAX_ARTICLES", "50"))
 
+# Maximum articles fetched per individual source (prevents any source from dominating)
+MAX_ARTICLES_PER_SOURCE = int(os.getenv("MAX_ARTICLES_PER_SOURCE", "8"))
+
 # Minimum characters per synthesized article
 MIN_CHARACTERS = int(os.getenv("MIN_CHARACTERS", "2000"))
 
@@ -38,14 +41,13 @@ CLAUDE_MODEL = "claude-sonnet-4-20250514"
 # ===================
 CATEGORIES = [
     "Diplomacy & Peace",
-    "Conflict & Crisis",
     "Environment & Climate",
     "Health & Wellbeing",
     "Social Progress",
     "Science & Innovation",
     "Economy & Trade",
     "Culture & Arts",
-    "Positive News",
+    "Solutions & Good News",
     "World Affairs"
 ]
 

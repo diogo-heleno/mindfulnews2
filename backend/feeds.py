@@ -110,31 +110,35 @@ def fetch_source(source: Dict) -> Tuple[int, int]:
         feed = feedparser.parse(source["url"])
         
         for entry in feed.entries:
+            # Stop if we've already added enough from this source
+            if new >= config.MAX_ARTICLES_PER_SOURCE:
+                break
+
             fetched += 1
-            
+
             # Parse date
             pub_date = parse_published_date(entry, now)
-            
+
             # Skip old articles
             if pub_date < cutoff:
                 continue
-            
+
             # Get basic info
             title = entry.get("title", "").strip()
             link = entry.get("link", "").strip()
-            
+
             if not title or not link:
                 continue
-            
+
             # Get image
             image_url = get_entry_image(entry)
             if not image_url:
                 # Try to fetch from page (slow, so only if missing)
                 image_url = fetch_og_image(link)
-            
+
             # Clean summary
             summary = clean_summary(entry.get("summary", "") or entry.get("description", ""))
-            
+
             # Insert to database
             article_id = database.insert_raw_article(
                 source_id=source["id"],
@@ -144,7 +148,7 @@ def fetch_source(source: Dict) -> Tuple[int, int]:
                 image_url=image_url,
                 published_at=pub_date
             )
-            
+
             if article_id:
                 new += 1
                 print(f"    ✅ New: {title[:60]}...")
