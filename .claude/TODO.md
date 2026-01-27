@@ -5,8 +5,8 @@ Pending tasks and improvements for Mindful News v2.
 ## High Priority
 
 - [ ] Upgrade Next.js from 14.2.5 to latest patched version (security vulnerability: https://nextjs.org/blog/security-update-2025-12-11)
-- [x] Set up cron job for backend worker — every 6 hours via system crontab na VPS (2026-01-27)
-- [ ] Verify all RSS feed sources are accessible (5 fontes nunca foram fetched: Good News Network, The Optimist Daily, Global Citizen, Borgen Magazine, Guardian Global Development)
+- [x] Set up cron job for backend worker — every 4 hours via system crontab na VPS (2026-01-27)
+- [x] Verify all RSS feed sources are accessible — todas as 25 fontes ativas estão a ser fetched com sucesso (2026-01-27)
 - [x] Test full pipeline end-to-end: fetch → cluster → synthesize → display (2026-01-27)
 
 ## Medium Priority

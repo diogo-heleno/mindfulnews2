@@ -37,7 +37,7 @@ Step-by-step guide for deploying Mindful News v2 on Coolify.
 
 1. Open the Supabase SQL Editor
 2. Run `supabase/schema.sql` — creates tables, indexes, RLS policies, views
-3. Run `supabase/seed.sql` — inserts 22 RSS feed sources
+3. Run `supabase/seed.sql` — inserts 27 RSS feed sources (14 international + 13 constructive/positive)
 4. Note down credentials:
    - **URL**: `https://your-project.supabase.co`
    - **Anon Key**: For frontend (public, read-only)
@@ -72,7 +72,7 @@ The backend is a one-shot cron job, NOT a long-running service.
 ### Recommended: Coolify Scheduled Job
 
 1. In Coolify, create a new scheduled job
-2. Schedule: `0 */6 * * *` (every 6 hours)
+2. Schedule: `0 */4 * * *` (every 4 hours)
 3. Command: `docker compose run --rm backend`
 4. Set environment variables:
    ```
@@ -93,7 +93,7 @@ cd backend && docker build -t mindfulnews-backend .
 # Add to crontab
 crontab -e
 # Add line:
-0 */6 * * * docker run --rm \
+0 */4 * * * docker run --rm \
   -e ANTHROPIC_API_KEY=sk-ant-api03-... \
   -e SUPABASE_URL=https://your-project.supabase.co \
   -e SUPABASE_SERVICE_KEY=eyJ... \
@@ -183,10 +183,16 @@ O backend demora ~3 minutos, processa ~50 artigos e cria ~5-9 artigos sintetizad
 ```bash
 crontab -e
 # Adicionar a linha:
-0 */6 * * * cd /opt/mindfulnews2 && docker compose run --rm backend >> /var/log/mindfulnews.log 2>&1
+0 */4 * * * cd /opt/mindfulnews2 && docker compose run --rm backend >> /var/log/mindfulnews.log 2>&1
 ```
 
-Isto corre o backend a cada 6 horas (00:00, 06:00, 12:00, 18:00 UTC).
+Isto corre o backend a cada 4 horas (00:00, 04:00, 08:00, 12:00, 16:00, 20:00 UTC).
+
+**Nota**: O ficheiro de log em `/var/log/` requer permissões para o user do cron:
+```bash
+sudo touch /var/log/mindfulnews.log
+sudo chown diogo:diogo /var/log/mindfulnews.log
+```
 
 ### Verificar se o backend correu
 

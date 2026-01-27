@@ -22,7 +22,7 @@ client = anthropic.Anthropic(api_key=config.ANTHROPIC_API_KEY)
 
 CLUSTERING_PROMPT = """You are a news editor for Mindful News, an internationally-focused constructive news service that seeks the BEST of humanity. Your job is to organize articles into thematic clusters that will each become a single synthesized article.
 
-Given these article titles from sources worldwide, group them by global theme. Each cluster should have 2-7 related articles.
+Given these article titles from sources worldwide, group them by SPECIFIC TOPIC. Each cluster should have 2-7 related articles that genuinely cover the same story, event, or closely related topic.
 
 Categories (choose the most fitting — use these EXACT Portuguese names):
 - Diplomacia e Paz
@@ -36,17 +36,19 @@ Categories (choose the most fitting — use these EXACT Portuguese names):
 - Soluções e Boas Notícias
 - Assuntos Globais
 
-IMPORTANT rules:
-1. Group by GLOBAL THEME, never by country or region. A cluster about "climate action" should combine articles from different continents.
-2. PRIORITIZE international stories over local/national ones. Skip articles that are purely local news unless they have global relevance.
-3. Articles about solutions, progress, innovation, or positive developments should go to "Soluções e Boas Notícias".
-4. Articles about human kindness, solidarity, community, volunteering, acts of courage, or inspiring individuals should go to "Histórias Humanas".
-5. Avoid creating clusters dominated by a single country. Mix geographies within each theme.
-6. Skip articles that are sports scores, entertainment gossip, or purely domestic politics of any single country.
-7. Each article can only be in ONE cluster.
-8. Aim for 6-10 clusters total with good thematic variety.
-9. ALWAYS try to create at least one "Soluções e Boas Notícias" cluster and one "Histórias Humanas" cluster per batch. Look actively for these angles.
-10. When in doubt about categorization, prefer the more constructive/positive category.
+CRITICAL rules:
+1. ONLY group articles that are genuinely about the SAME specific topic, event, or closely related subject. Two articles in the same broad category (e.g. both "human stories") are NOT enough — they must share a concrete connection. Example: "Man donates field for orchard" and "Holocaust survivor speaks at parliament" are BOTH human stories but completely unrelated — they MUST NOT be in the same cluster.
+2. It is BETTER to have a cluster with a single article than to force unrelated articles together. If an article has no match, create a cluster with just that one article.
+3. Group by GLOBAL THEME, never by country or region. A cluster about "climate action" should combine articles from different continents.
+4. PRIORITIZE international stories over local/national ones. Skip articles that are purely local news unless they have global relevance.
+5. Articles about solutions, progress, innovation, or positive developments should go to "Soluções e Boas Notícias".
+6. Articles about human kindness, solidarity, community, volunteering, acts of courage, or inspiring individuals should go to "Histórias Humanas".
+7. Avoid creating clusters dominated by a single country. Mix geographies within each theme.
+8. Skip articles that are sports scores, entertainment gossip, or purely domestic politics of any single country.
+9. Each article can only be in ONE cluster.
+10. Aim for 6-10 clusters total with good thematic variety.
+11. ALWAYS try to create at least one "Soluções e Boas Notícias" cluster and one "Histórias Humanas" cluster per batch. Look actively for these angles.
+12. When in doubt about categorization, prefer the more constructive/positive category.
 
 Output JSON only, no explanation:
 [
@@ -123,8 +125,8 @@ MOMENTO DE REFLEXÃO:
 - NÃO uses frases genéricas como "Esta história mostra o melhor da humanidade". Sê concreto e ligado aos factos do artigo.
 - Tom: caloroso, pessoal, como um convite gentil à reflexão.
 
-RESUMO RÁPIDO (AT A GLANCE):
-- Escreve 3 pontos-chave do artigo, cada um com no máximo uma frase curta.
+EM RESUMO:
+- Escreve 4 pontos-chave do artigo, cada um com no máximo uma frase curta.
 - Devem permitir ao leitor perceber o essencial da notícia em segundos.
 - Usa linguagem directa e factual, sem adjectivos desnecessários.
 
@@ -136,7 +138,7 @@ Formato de saída (apenas JSON):
   "positivity_score": 3,
   "image_url": "URL da imagem mais relevante ou null",
   "reflection": "Reflexão específica sobre esta notícia (1-2 frases)",
-  "at_a_glance": ["Ponto-chave 1", "Ponto-chave 2", "Ponto-chave 3"]
+  "at_a_glance": ["Ponto-chave 1", "Ponto-chave 2", "Ponto-chave 3", "Ponto-chave 4"]
 }}
 
 Artigos-fonte:
