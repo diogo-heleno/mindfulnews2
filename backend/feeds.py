@@ -20,16 +20,21 @@ def fetch_og_image(url: str, timeout: int = 10) -> Optional[str]:
         })
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, "html.parser")
-            
+
             # Try og:image first
             og_image = soup.find("meta", property="og:image")
             if og_image and og_image.get("content"):
-                return og_image["content"]
-            
+                img_url = og_image["content"]
+                if img_url.startswith("http://"):
+                    img_url = "https://" + img_url[7:]
+                return img_url
+
             # Fallback to first large image
             for img in soup.find_all("img"):
                 src = img.get("src", "")
                 if src and ("http" in src) and not ("icon" in src.lower()):
+                    if src.startswith("http://"):
+                        src = "https://" + src[7:]
                     return src
     except Exception:
         pass
@@ -52,19 +57,36 @@ def parse_published_date(entry: dict, default: datetime) -> datetime:
     return default
 
 
+VIDEO_EXTENSIONS = ('.mp4', '.webm', '.ogg', '.m3u8', '.mpd', '.avi', '.mov', '.flv')
+
+
 def get_entry_images(entry: dict) -> List[str]:
-    """Extract ALL image URLs from feed entry."""
+    """Extract ALL image URLs from feed entry, filtering out video URLs."""
     images = []
     seen = set()
 
     def add_image(url: Optional[str]):
-        if url and url.startswith("http") and "icon" not in url.lower() and url not in seen:
+        if not url or not url.startswith("http") or "icon" in url.lower():
+            return
+        # Skip video file URLs
+        path = url.split("?")[0].lower()
+        if any(path.endswith(ext) for ext in VIDEO_EXTENSIONS):
+            return
+        # Normalize HTTP to HTTPS
+        if url.startswith("http://"):
+            url = "https://" + url[7:]
+        if url not in seen:
             seen.add(url)
             images.append(url)
 
-    # Try media_content (can have multiple)
+    # Try media_content (can have multiple) - filter by type/medium
     if hasattr(entry, "media_content") and entry.media_content:
         for media in entry.media_content:
+            media_type = media.get("type", "")
+            medium = media.get("medium", "")
+            # Skip if explicitly marked as video/audio
+            if media_type.startswith(("video", "audio")) or medium in ("video", "audio"):
+                continue
             add_image(media.get("url"))
 
     # Try media_thumbnail (can have multiple)
@@ -72,7 +94,7 @@ def get_entry_images(entry: dict) -> List[str]:
         for thumb in entry.media_thumbnail:
             add_image(thumb.get("url"))
 
-    # Try enclosures
+    # Try enclosures - only images
     if hasattr(entry, "enclosures") and entry.enclosures:
         for enc in entry.enclosures:
             if enc.get("type", "").startswith("image"):
