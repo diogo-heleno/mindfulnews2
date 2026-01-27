@@ -112,8 +112,15 @@ SELECÇÃO DE IMAGEM:
 - Cada artigo-fonte inclui um campo "image_url" (pode ser null).
 - Escolhe a imagem que MELHOR representa o artigo sintetizado. A imagem deve ser relevante para o tema principal do texto que escreveste.
 - Prefere imagens do artigo-fonte que mais contribuiu para a síntese.
+- Entre várias opções, prefere a imagem mais positiva, construtiva e esperançosa — pessoas a sorrir, natureza, soluções em acção, comunidades unidas.
 - NUNCA escolhas uma imagem que não tenha relação directa com o conteúdo do artigo sintetizado.
 - Se nenhuma imagem for adequada, devolve null.
+
+MOMENTO DE REFLEXÃO:
+- Escreve uma reflexão curta (1-2 frases) que seja específica a ESTA notícia.
+- Deve convidar o leitor a pensar sobre um aspecto concreto da história — uma acção, uma atitude, uma ideia — e como pode aplicar isso no seu dia-a-dia.
+- NÃO uses frases genéricas como "Esta história mostra o melhor da humanidade". Sê concreto e ligado aos factos do artigo.
+- Tom: caloroso, pessoal, como um convite gentil à reflexão.
 
 Formato de saída (apenas JSON):
 {{
@@ -121,7 +128,8 @@ Formato de saída (apenas JSON):
   "summary": "Uma frase-resumo construtiva e esperançosa em português (máx. 200 caracteres)",
   "content": "Texto completo do artigo em português com parágrafos...",
   "positivity_score": 3,
-  "image_url": "URL da imagem mais relevante ou null"
+  "image_url": "URL da imagem mais relevante ou null",
+  "reflection": "Reflexão específica sobre esta notícia (1-2 frases)"
 }}
 
 Artigos-fonte:
@@ -349,7 +357,8 @@ def process_articles() -> Tuple[int, int]:
             image_url = result.get("chosen_image") or get_best_image(source_articles)
             published_at = get_latest_date(source_articles)
             original_links = [a["link"] for a in source_articles]
-            
+            reflection = result.get("reflection")
+
             # Save to database
             article_id = database.insert_article(
                 title=result["title"],
@@ -359,7 +368,8 @@ def process_articles() -> Tuple[int, int]:
                 positivity_score=result["positivity_score"],
                 original_links=original_links,
                 image_url=image_url,
-                published_at=published_at
+                published_at=published_at,
+                reflection=reflection
             )
             
             if article_id:

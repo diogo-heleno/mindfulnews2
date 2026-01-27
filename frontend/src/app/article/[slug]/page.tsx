@@ -111,11 +111,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                     Momento de Reflexao
                   </h3>
                   <p className="text-stone-600 leading-relaxed text-sm">
-                    {article.positivity_score >= 4
-                      ? 'Esta historia mostra o que de melhor a humanidade tem para oferecer. Que accoes ou atitudes desta noticia o podem inspirar no seu dia-a-dia?'
-                      : article.positivity_score >= 3
-                        ? 'O mundo e complexo, mas tambem esta cheio de pessoas a trabalhar por solucoes. O que retira de mais construtivo desta leitura?'
-                        : 'Mesmo perante desafios, existem sempre pessoas e comunidades a agir. Onde encontra sinais de esperanca nesta historia?'
+                    {article.reflection
+                      || (article.positivity_score >= 4
+                        ? 'Esta historia mostra o que de melhor a humanidade tem para oferecer. Que accoes ou atitudes desta noticia o podem inspirar no seu dia-a-dia?'
+                        : article.positivity_score >= 3
+                          ? 'O mundo e complexo, mas tambem esta cheio de pessoas a trabalhar por solucoes. O que retira de mais construtivo desta leitura?'
+                          : 'Mesmo perante desafios, existem sempre pessoas e comunidades a agir. Onde encontra sinais de esperanca nesta historia?')
                     }
                   </p>
                 </div>

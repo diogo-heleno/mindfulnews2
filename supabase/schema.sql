@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS articles (
     -- Source info
     original_links TEXT[] NOT NULL DEFAULT '{}',
     image_url TEXT,
-    
+    reflection TEXT,
+
     -- Timestamps
     published_at TIMESTAMPTZ NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),

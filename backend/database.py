@@ -109,14 +109,15 @@ def insert_article(
     positivity_score: int,
     original_links: List[str],
     image_url: Optional[str],
-    published_at: datetime
+    published_at: datetime,
+    reflection: Optional[str] = None
 ) -> Optional[str]:
     """Insert a processed article. Returns ID if successful."""
     client = get_client()
-    
+
     slug = generate_slug(title)
-    
-    response = client.table("articles").insert({
+
+    data = {
         "title": title,
         "slug": slug,
         "summary": summary,
@@ -126,7 +127,11 @@ def insert_article(
         "original_links": original_links,
         "image_url": image_url,
         "published_at": published_at.isoformat()
-    }).execute()
+    }
+    if reflection:
+        data["reflection"] = reflection
+
+    response = client.table("articles").insert(data).execute()
     
     if response.data:
         return response.data[0]["id"]
