@@ -78,6 +78,27 @@ ERROR: failed to calculate checksum of ref: "/app/public": not found
    SELECT * FROM processing_runs ORDER BY started_at DESC LIMIT 5;
    ```
 
+### Backend fails with `Could not find column in schema cache`
+
+```
+{'message': "Could not find the 'at_a_glance' column of 'articles' in the schema cache", 'code': 'PGRST204'}
+```
+
+**Causa**: O backend tenta inserir dados numa coluna que existe na tabela mas o PostgREST (Supabase) ainda não atualizou o schema cache após um `ALTER TABLE`.
+
+**Fix**:
+1. Verificar que a coluna existe na tabela:
+   ```sql
+   SELECT column_name FROM information_schema.columns
+   WHERE table_name = 'articles' ORDER BY ordinal_position;
+   ```
+2. Recarregar o schema cache do PostgREST:
+   - No Supabase Dashboard, ir a **Settings → API → Reload schema cache**
+   - Ou via SQL: `NOTIFY pgrst, 'reload schema';`
+3. Se o problema persistir, reiniciar o serviço PostgREST do Supabase
+
+---
+
 ### Backend fails silently
 
 1. Verify `ANTHROPIC_API_KEY` is valid and has credits
@@ -146,6 +167,25 @@ Command 'python' not found
 **Fix**: Usar `python3` ou instalar o pacote `python-is-python3`:
 ```bash
 sudo apt install python-is-python3
+```
+
+---
+
+### Cron log file não é criado (`Permission denied`)
+
+O cron corre como user `diogo` mas `/var/log/` pertence a `root`. O ficheiro de log nunca é criado.
+
+**Fix**: Criar o ficheiro e dar permissões ao user:
+```bash
+sudo touch /var/log/mindfulnews.log
+sudo chown diogo:diogo /var/log/mindfulnews.log
+```
+
+Ou usar um caminho onde o user tem permissão:
+```bash
+crontab -e
+# Mudar para:
+0 */4 * * * cd /opt/mindfulnews2 && docker compose run --rm backend >> /opt/mindfulnews2/backend.log 2>&1
 ```
 
 ---

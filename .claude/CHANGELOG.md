@@ -2,6 +2,19 @@
 
 All notable changes to Mindful News v2.
 
+## [2026-01-27] - Documentation Update
+
+### Fixed
+- **TODO.md**: Marked RSS feed verification as complete — all 25 active sources are being fetched successfully.
+- **TODO.md**: Corrected cron interval from 6h to 4h (matches actual `crontab` config).
+- **DEPLOYMENT.md**: Updated seed source count from 22 to 27 (14 international + 13 constructive/positive).
+- **DEPLOYMENT.md**: Corrected cron schedule from `*/6` to `*/4` across all examples.
+- **DEPLOYMENT.md**: Added note about log file permissions for `/var/log/mindfulnews.log`.
+
+### Added
+- **TROUBLESHOOTING.md**: Added `Could not find column in schema cache` issue (PostgREST PGRST204 error after `ALTER TABLE`), with fix via `NOTIFY pgrst, 'reload schema'`.
+- **TROUBLESHOOTING.md**: Added cron log file permissions issue (`/var/log/` owned by root), with fix via `chown` or alternative log path.
+
 ## [2026-01-26] - Mindful Experience Enhancement
 
 ### Changed

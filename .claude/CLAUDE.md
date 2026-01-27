@@ -18,7 +18,7 @@ Mindful News v2 is a constructive news aggregator that seeks the best of humanit
 
 ```
 mindfulnews2/
-├── backend/           # Python worker (runs every 6 hours)
+├── backend/           # Python worker (runs every 4 hours)
 │   ├── main.py        # Entry point, orchestrates 5-step pipeline
 │   ├── config.py      # Environment config, constants
 │   ├── feeds.py       # RSS fetching, parsing, image extraction
