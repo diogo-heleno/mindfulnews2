@@ -23,7 +23,7 @@ Database schema, configuration, and operations for Mindful News v2.
 | `created_at` | TIMESTAMPTZ | Row creation time |
 | `updated_at` | TIMESTAMPTZ | Auto-updated on change |
 
-**Regions**: Europe, Middle East, Africa, Asia, Americas, Pacific, Positive
+**Regions**: Europe, Middle East, Africa, Asia, Americas, Pacific, Positive, General
 
 ### `articles` — Processed Articles (Public)
 
@@ -173,6 +173,7 @@ AND created_at < NOW() - INTERVAL '7 days';
 | Americas | BBC Mundo |
 | Pacific | ABC Australia |
 | Positive | Positive News, Good Good Good, Reasons to be Cheerful, Yes Magazine, Science Daily (Environment + Health) |
+| General | BBC News (Top + World), The Guardian International, DW World, France 24, NPR News, CNN International |
 
 To add a new source:
 ```sql

@@ -26,7 +26,7 @@ const filters: { id: FilterMode; label: string; description: string }[] = [
   {
     id: 'all',
     label: 'Todas',
-    description: 'Cobertura completa, sempre com contexto e esperança',
+    description: 'Cobertura completa, com factos, contexto e perspectiva',
   },
 ]
 

@@ -31,7 +31,7 @@ mindfulnews2/
 │   └── Dockerfile     # Multi-stage build (deps → builder → runner)
 ├── supabase/
 │   ├── schema.sql     # Tables, indexes, RLS, views, functions
-│   └── seed.sql       # 27 RSS sources (14 international + 13 constructive)
+│   └── seed.sql       # 34 RSS sources (14 international + 13 constructive + 7 general)
 ├── docker-compose.yml
 └── .env.example
 ```
@@ -44,6 +44,8 @@ mindfulnews2/
 - Positivity scores: 1 (urgente) to 5 (inspiradora) - always constructive framing
 - Filter modes: uplifting/inspiradoras (>=4, default), balanced/equilibradas (>=3), all/todas (>=1)
 - Positive news sources get 2x weight in article selection
+- Synthesis prompt has dual modes: CONSTRUTIVO (positive sources) and FACTUAL (general sources)
+- Source regions: Europe, Middle East, Africa, Asia, Americas, Pacific, Positive, General
 
 ## Common Pitfalls
 

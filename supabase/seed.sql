@@ -47,7 +47,16 @@ INSERT INTO sources (name, url, region, is_active) VALUES
 ('Science Daily Health', 'https://www.sciencedaily.com/rss/top/health.xml', 'Positive', true),
 
 -- Constructive Sections of Major Outlets
-('Guardian Global Development', 'https://www.theguardian.com/global-development/rss', 'Positive', true)
+('Guardian Global Development', 'https://www.theguardian.com/global-development/rss', 'Positive', true),
+
+-- General / Mainstream News
+('BBC News Top Stories', 'https://feeds.bbci.co.uk/news/rss.xml', 'General', true),
+('BBC News World', 'https://feeds.bbci.co.uk/news/world/rss.xml', 'General', true),
+('The Guardian International', 'https://www.theguardian.com/international/rss', 'General', true),
+('DW World', 'https://rss.dw.com/rdf/rss-en-world', 'General', true),
+('France 24 English', 'https://www.france24.com/en/rss', 'General', true),
+('NPR News', 'https://feeds.npr.org/1001/rss.xml', 'General', true),
+('CNN International', 'http://rss.cnn.com/rss/edition_world.rss', 'General', true)
 
 ON CONFLICT (url) DO UPDATE SET
     name = EXCLUDED.name,

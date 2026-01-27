@@ -37,7 +37,7 @@ Step-by-step guide for deploying Mindful News v2 on Coolify.
 
 1. Open the Supabase SQL Editor
 2. Run `supabase/schema.sql` — creates tables, indexes, RLS policies, views
-3. Run `supabase/seed.sql` — inserts 27 RSS feed sources (14 international + 13 constructive/positive)
+3. Run `supabase/seed.sql` — inserts 34 RSS feed sources (14 international + 13 constructive/positive + 7 general/mainstream)
 4. Note down credentials:
    - **URL**: `https://your-project.supabase.co`
    - **Anon Key**: For frontend (public, read-only)

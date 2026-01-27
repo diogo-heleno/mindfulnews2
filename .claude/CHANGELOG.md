@@ -2,6 +2,19 @@
 
 All notable changes to Mindful News v2.
 
+## [2026-01-27] - Mainstream News Support ("Todas" Filter)
+
+### Added
+- **7 new mainstream RSS sources** (region "General"): BBC News Top Stories, BBC News World, The Guardian International, DW World, France 24 English, NPR News, CNN International. Total: 34 sources.
+- **Dual-mode synthesis prompt**: MODO CONSTRUTIVO (constructive sources, scores 4-5), MODO FACTUAL (general sources, factual and balanced without forced positivity, scores 1-3), MODO MISTO (mixed sources, scores 2-4).
+- **Source type metadata**: Each article sent to Claude now includes `source_type` ("constructive" or "general") so the synthesis adapts automatically.
+
+### Changed
+- **MAX_ARTICLES**: Increased from 50 to 80 to accommodate additional sources.
+- **CLUSTERING_PROMPT**: Updated to recognize dual content types. Cluster target increased from 6-10 to 8-14. Removed bias toward constructive categories for general news.
+- **SYNTHESIS_PROMPT**: Rewritten as adaptive dual-mode prompt. General news is rewritten factually without sensationalism or forced positivity. Constructive news keeps full constructive journalism treatment.
+- **FilterBar**: "Todas" description updated from "sempre com contexto e esperança" to "com factos, contexto e perspectiva".
+
 ## [2026-01-27] - Documentation Update
 
 ### Fixed

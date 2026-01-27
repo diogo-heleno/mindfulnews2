@@ -57,3 +57,11 @@ Record of key design decisions for Mindful News v2.
 **Rationale**: Allows users to subscribe to filtered feeds (e.g., only uplifting news). Static RSS generation would require rebuilding on every article update.
 
 **Consequence**: The route handler queries Supabase on each request. Cache headers (`max-age=3600`) prevent excessive DB queries.
+
+## ADR-008: Dual-Mode Synthesis (Constructive + Factual)
+
+**Decision**: The synthesis prompt operates in two modes based on source composition: MODO CONSTRUTIVO for constructive journalism sources and MODO FACTUAL for general mainstream sources.
+
+**Rationale**: The "Todas" filter should show all news including hard/mainstream topics, but without fear-mongering or sensationalism. Instead of two separate prompts, a single adaptive prompt handles mixed clusters naturally. Each source article is tagged with `source_type` ("constructive" or "general") based on its region. Constructive sources (region "Positive") get the existing constructive treatment (scores 4-5). General sources get factual, balanced rewriting without forced positivity (scores 1-3).
+
+**Consequence**: The filter system works naturally — mainstream articles with scores 1-2 only appear in "Todas" (>=1), while "Inspiradoras" (>=4) and "Equilibradas" (>=3) continue showing constructive content. API costs increase slightly due to more articles (MAX_ARTICLES 50→80).
