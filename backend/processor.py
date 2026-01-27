@@ -152,7 +152,7 @@ def cluster_articles(articles: List[Dict]) -> List[Dict]:
         return []
     
     titles = [a["title"] for a in articles]
-    prompt = CLUSTERING_PROMPT.format(titles=json.dumps(titles, indent=2))
+    prompt = CLUSTERING_PROMPT.format(titles=json.dumps(titles, indent=2, ensure_ascii=False))
     
     print("\n🧠 Clustering articles with Claude...")
     
@@ -201,7 +201,7 @@ def synthesize_cluster(
         "summary": a["summary"][:500],
         "link": a["link"],
         "image_urls": a.get("image_urls") or ([a["image_url"]] if a.get("image_url") else [])
-    } for a in matched], indent=2)
+    } for a in matched], indent=2, ensure_ascii=False)
     
     prompt = SYNTHESIS_PROMPT.format(
         min_chars=config.MIN_CHARACTERS,
