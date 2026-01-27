@@ -150,12 +150,57 @@ SELECT * FROM processing_runs ORDER BY started_at DESC LIMIT 10;
 SELECT * FROM articles_stats;
 ```
 
-## Updates
+## VPS Operations
+
+The project is deployed at `/opt/mindfulnews2` on the VPS (Ubuntu).
+
+### Atualizar código na VPS
 
 ```bash
-git pull
-docker compose build
-docker compose up -d
+cd /opt/mindfulnews2
+git pull origin main
+```
+
+### Reconstruir e relançar o frontend
+
+```bash
+cd /opt/mindfulnews2
+docker compose build frontend
+docker compose up -d frontend
+```
+
+### Correr o backend manualmente (atualizar notícias)
+
+```bash
+cd /opt/mindfulnews2
+docker compose run --rm backend
+```
+
+O backend demora ~3 minutos, processa ~50 artigos e cria ~5-9 artigos sintetizados por execução.
+
+### Configurar cron job (execução automática)
+
+```bash
+crontab -e
+# Adicionar a linha:
+0 */6 * * * cd /opt/mindfulnews2 && docker compose run --rm backend >> /var/log/mindfulnews.log 2>&1
+```
+
+Isto corre o backend a cada 6 horas (00:00, 06:00, 12:00, 18:00 UTC).
+
+### Verificar se o backend correu
+
+```sql
+-- Últimas execuções
+SELECT started_at, status, articles_created, error_message
+FROM processing_runs ORDER BY started_at DESC LIMIT 5;
+
+-- Estatísticas gerais
+SELECT * FROM articles_stats;
+
+-- Fontes que nunca foram fetched
+SELECT name, region FROM sources
+WHERE is_active = true AND last_fetched_at IS NULL;
 ```
 
 ## Cost Estimates

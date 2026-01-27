@@ -102,6 +102,54 @@ These are best-practice warnings, not errors. The build still succeeds. To fix p
 RUN --mount=type=secret,id=api_key ...
 ```
 
+## VPS Issues
+
+### Projeto não encontrado (`No such file or directory`)
+
+```
+-bash: cd: /home/diogo/mindfulnews2: No such file or directory
+```
+
+**Causa**: O projeto não está em `~/mindfulnews2`. Na VPS, o caminho correto é `/opt/mindfulnews2`.
+
+**Fix**: Usar sempre o caminho absoluto:
+```bash
+cd /opt/mindfulnews2
+```
+
+---
+
+### `docker compose` diz `no configuration file provided`
+
+```
+no configuration file provided: not found
+```
+
+**Causa**: Estás fora do diretório do projeto. O `docker-compose.yml` está em `/opt/mindfulnews2/`.
+
+**Fix**:
+```bash
+cd /opt/mindfulnews2
+docker compose run --rm backend
+```
+
+---
+
+### `python` não encontrado na VPS
+
+```
+Command 'python' not found
+```
+
+**Causa**: Na VPS Ubuntu, o comando é `python3`, não `python`.
+
+**Fix**: Usar `python3` ou instalar o pacote `python-is-python3`:
+```bash
+sudo apt install python-is-python3
+```
+
+---
+
 ## Supabase Issues
 
 See `.claude/SUPABASE.md` for database-specific troubleshooting.
