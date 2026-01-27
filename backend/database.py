@@ -41,14 +41,15 @@ def insert_raw_article(
     link: str,
     summary: str,
     image_url: Optional[str],
-    published_at: datetime
+    published_at: datetime,
+    image_urls: Optional[List[str]] = None
 ) -> Optional[str]:
     """Insert a raw article. Returns ID if successful, None if duplicate."""
     if article_exists(link):
         return None
-    
+
     client = get_client()
-    response = client.table("raw_articles").insert({
+    data = {
         "source_id": source_id,
         "title": title,
         "link": link,
@@ -56,8 +57,12 @@ def insert_raw_article(
         "image_url": image_url,
         "published_at": published_at.isoformat(),
         "processed": False
-    }).execute()
-    
+    }
+    if image_urls:
+        data["image_urls"] = image_urls
+
+    response = client.table("raw_articles").insert(data).execute()
+
     if response.data:
         return response.data[0]["id"]
     return None
@@ -110,7 +115,8 @@ def insert_article(
     original_links: List[str],
     image_url: Optional[str],
     published_at: datetime,
-    reflection: Optional[str] = None
+    reflection: Optional[str] = None,
+    at_a_glance: Optional[List[str]] = None
 ) -> Optional[str]:
     """Insert a processed article. Returns ID if successful."""
     client = get_client()
@@ -130,6 +136,8 @@ def insert_article(
     }
     if reflection:
         data["reflection"] = reflection
+    if at_a_glance and isinstance(at_a_glance, list):
+        data["at_a_glance"] = at_a_glance
 
     response = client.table("articles").insert(data).execute()
     

@@ -52,31 +52,40 @@ def parse_published_date(entry: dict, default: datetime) -> datetime:
     return default
 
 
-def get_entry_image(entry: dict) -> Optional[str]:
-    """Extract image URL from feed entry."""
-    # Try media_content
+def get_entry_images(entry: dict) -> List[str]:
+    """Extract ALL image URLs from feed entry."""
+    images = []
+    seen = set()
+
+    def add_image(url: Optional[str]):
+        if url and url.startswith("http") and "icon" not in url.lower() and url not in seen:
+            seen.add(url)
+            images.append(url)
+
+    # Try media_content (can have multiple)
     if hasattr(entry, "media_content") and entry.media_content:
-        return entry.media_content[0].get("url")
-    
-    # Try media_thumbnail
+        for media in entry.media_content:
+            add_image(media.get("url"))
+
+    # Try media_thumbnail (can have multiple)
     if hasattr(entry, "media_thumbnail") and entry.media_thumbnail:
-        return entry.media_thumbnail[0].get("url")
-    
-    # Try enclosure
+        for thumb in entry.media_thumbnail:
+            add_image(thumb.get("url"))
+
+    # Try enclosures
     if hasattr(entry, "enclosures") and entry.enclosures:
         for enc in entry.enclosures:
             if enc.get("type", "").startswith("image"):
-                return enc.get("href") or enc.get("url")
-    
-    # Try to find image in content
+                add_image(enc.get("href") or enc.get("url"))
+
+    # Try to find images in content/summary
     content = entry.get("summary", "") or entry.get("description", "")
     if content:
         soup = BeautifulSoup(content, "html.parser")
-        img = soup.find("img")
-        if img and img.get("src"):
-            return img["src"]
-    
-    return None
+        for img in soup.find_all("img"):
+            add_image(img.get("src"))
+
+    return images
 
 
 def clean_summary(content: str) -> str:
@@ -130,11 +139,16 @@ def fetch_source(source: Dict) -> Tuple[int, int]:
             if not title or not link:
                 continue
 
-            # Get image
-            image_url = get_entry_image(entry)
-            if not image_url:
+            # Get all images from RSS entry
+            image_urls = get_entry_images(entry)
+            if not image_urls:
                 # Try to fetch from page (slow, so only if missing)
-                image_url = fetch_og_image(link)
+                og_image = fetch_og_image(link)
+                if og_image:
+                    image_urls = [og_image]
+
+            # Primary image is the first one
+            image_url = image_urls[0] if image_urls else None
 
             # Clean summary
             summary = clean_summary(entry.get("summary", "") or entry.get("description", ""))
@@ -146,6 +160,7 @@ def fetch_source(source: Dict) -> Tuple[int, int]:
                 link=link,
                 summary=summary,
                 image_url=image_url,
+                image_urls=image_urls,
                 published_at=pub_date
             )
 

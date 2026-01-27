@@ -109,7 +109,8 @@ PONTUAÇÃO DE POSITIVIDADE (sê honesto mas procura activamente o ângulo const
 - 1: Urgente (emergência aguda, enquadrada com dignidade, contexto e foco na resposta humana)
 
 SELECÇÃO DE IMAGEM:
-- Cada artigo-fonte inclui um campo "image_url" (pode ser null).
+- Cada artigo-fonte inclui um campo "image_urls" com TODAS as imagens disponíveis nesse artigo.
+- Analisa todas as imagens disponíveis de todos os artigos-fonte.
 - Escolhe a imagem que MELHOR representa o artigo sintetizado. A imagem deve ser relevante para o tema principal do texto que escreveste.
 - Prefere imagens do artigo-fonte que mais contribuiu para a síntese.
 - Entre várias opções, prefere a imagem mais positiva, construtiva e esperançosa — pessoas a sorrir, natureza, soluções em acção, comunidades unidas.
@@ -122,6 +123,11 @@ MOMENTO DE REFLEXÃO:
 - NÃO uses frases genéricas como "Esta história mostra o melhor da humanidade". Sê concreto e ligado aos factos do artigo.
 - Tom: caloroso, pessoal, como um convite gentil à reflexão.
 
+RESUMO RÁPIDO (AT A GLANCE):
+- Escreve 3 pontos-chave do artigo, cada um com no máximo uma frase curta.
+- Devem permitir ao leitor perceber o essencial da notícia em segundos.
+- Usa linguagem directa e factual, sem adjectivos desnecessários.
+
 Formato de saída (apenas JSON):
 {{
   "title": "Título claro e informativo em português, enquadramento construtivo e internacional",
@@ -129,7 +135,8 @@ Formato de saída (apenas JSON):
   "content": "Texto completo do artigo em português com parágrafos...",
   "positivity_score": 3,
   "image_url": "URL da imagem mais relevante ou null",
-  "reflection": "Reflexão específica sobre esta notícia (1-2 frases)"
+  "reflection": "Reflexão específica sobre esta notícia (1-2 frases)",
+  "at_a_glance": ["Ponto-chave 1", "Ponto-chave 2", "Ponto-chave 3"]
 }}
 
 Artigos-fonte:
@@ -188,12 +195,12 @@ def synthesize_cluster(
     if not matched:
         return None
     
-    # Prepare article data for prompt (include image_url for selection)
+    # Prepare article data for prompt (include all image URLs for selection)
     articles_text = json.dumps([{
         "title": a["title"],
         "summary": a["summary"][:500],
         "link": a["link"],
-        "image_url": a.get("image_url")
+        "image_urls": a.get("image_urls") or ([a["image_url"]] if a.get("image_url") else [])
     } for a in matched], indent=2)
     
     prompt = SYNTHESIS_PROMPT.format(
@@ -358,6 +365,7 @@ def process_articles() -> Tuple[int, int]:
             published_at = get_latest_date(source_articles)
             original_links = [a["link"] for a in source_articles]
             reflection = result.get("reflection")
+            at_a_glance = result.get("at_a_glance")
 
             # Save to database
             article_id = database.insert_article(
@@ -369,7 +377,8 @@ def process_articles() -> Tuple[int, int]:
                 original_links=original_links,
                 image_url=image_url,
                 published_at=published_at,
-                reflection=reflection
+                reflection=reflection,
+                at_a_glance=at_a_glance
             )
             
             if article_id:
