@@ -39,7 +39,9 @@ CREATE TABLE IF NOT EXISTS articles (
     -- Source info
     original_links TEXT[] NOT NULL DEFAULT '{}',
     image_url TEXT,
-    
+    reflection TEXT,
+    at_a_glance TEXT[] DEFAULT '{}',
+
     -- Timestamps
     published_at TIMESTAMPTZ NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -55,7 +57,8 @@ CREATE TABLE IF NOT EXISTS raw_articles (
     link TEXT NOT NULL UNIQUE,
     summary TEXT,
     image_url TEXT,
-    
+    image_urls TEXT[] DEFAULT '{}',
+
     published_at TIMESTAMPTZ NOT NULL,
     processed BOOLEAN DEFAULT false,
     

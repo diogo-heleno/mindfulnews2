@@ -86,9 +86,26 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </h1>
 
           {/* Summary */}
-          <p className="text-lg text-stone-700 mb-8 leading-relaxed border-l-4 border-sage-300 pl-4">
+          <p className="text-lg md:text-xl text-stone-700 mb-8 leading-relaxed border-l-4 border-sage-300 pl-4">
             {article.summary}
           </p>
+
+          {/* At a Glance */}
+          {article.at_a_glance && article.at_a_glance.length > 0 && (
+            <div className="mb-10 bg-cream-50 rounded-xl p-5 md:p-6">
+              <h2 className="font-serif text-sm font-semibold text-stone-500 uppercase tracking-wider mb-3">
+                Num Relance
+              </h2>
+              <ul className="space-y-2">
+                {article.at_a_glance.map((point, index) => (
+                  <li key={index} className="flex items-start space-x-2.5">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-sage-400 mt-2.5 flex-shrink-0" />
+                    <span className="text-base md:text-lg text-stone-700 leading-relaxed">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Article Content */}
           <div className="article-content">
@@ -111,11 +128,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                     Momento de Reflexao
                   </h3>
                   <p className="text-stone-600 leading-relaxed text-sm">
-                    {article.positivity_score >= 4
-                      ? 'Esta historia mostra o que de melhor a humanidade tem para oferecer. Que accoes ou atitudes desta noticia o podem inspirar no seu dia-a-dia?'
-                      : article.positivity_score >= 3
-                        ? 'O mundo e complexo, mas tambem esta cheio de pessoas a trabalhar por solucoes. O que retira de mais construtivo desta leitura?'
-                        : 'Mesmo perante desafios, existem sempre pessoas e comunidades a agir. Onde encontra sinais de esperanca nesta historia?'
+                    {article.reflection
+                      || (article.positivity_score >= 4
+                        ? 'Esta historia mostra o que de melhor a humanidade tem para oferecer. Que accoes ou atitudes desta noticia o podem inspirar no seu dia-a-dia?'
+                        : article.positivity_score >= 3
+                          ? 'O mundo e complexo, mas tambem esta cheio de pessoas a trabalhar por solucoes. O que retira de mais construtivo desta leitura?'
+                          : 'Mesmo perante desafios, existem sempre pessoas e comunidades a agir. Onde encontra sinais de esperanca nesta historia?')
                     }
                   </p>
                 </div>

@@ -34,12 +34,17 @@
     @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
   }
   
-  .article-content p {
-    @apply mb-4 text-stone-700 leading-relaxed;
+  .article-content {
+    @apply font-serif;
   }
-  
+
+  .article-content p {
+    @apply mb-5 text-stone-700 text-lg md:text-xl leading-relaxed;
+    line-height: 1.8;
+  }
+
   .article-content p:first-child {
-    @apply text-lg text-stone-800;
+    @apply text-xl md:text-2xl text-stone-800;
   }
   
   .filter-button {

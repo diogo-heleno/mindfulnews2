@@ -16,6 +16,8 @@ export interface Article {
   positivity_score: number
   image_url: string | null
   original_links: string[]
+  reflection: string | null
+  at_a_glance: string[] | null
   published_at: string
   created_at: string
 }
