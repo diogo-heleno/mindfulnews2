@@ -111,6 +111,28 @@ export async function getMostInspiringArticle(): Promise<Article | null> {
   return data
 }
 
+// Fetch related articles from the same category (excluding current)
+export async function getRelatedArticles(
+  category: string,
+  excludeSlug: string,
+  limit: number = 4
+): Promise<Article[]> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('*')
+    .eq('category', category)
+    .neq('slug', excludeSlug)
+    .order('published_at', { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    console.error('Error fetching related articles:', error)
+    return []
+  }
+
+  return data || []
+}
+
 // Get article count by filter
 export async function getArticleCount(filter: FilterMode = 'balanced'): Promise<number> {
   const { count, error } = await supabase

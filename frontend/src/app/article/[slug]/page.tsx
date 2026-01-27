@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getArticleBySlug } from '@/lib/supabase'
-import { formatDate, getPositivityLabel, getPositivityColor, siteConfig } from '@/lib/utils'
+import { getArticleBySlug, getRelatedArticles } from '@/lib/supabase'
+import { formatDate, formatRelativeTime, getPositivityLabel, getPositivityColor, siteConfig } from '@/lib/utils'
 
 interface ArticlePageProps {
   params: { slug: string }
@@ -38,11 +38,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound()
   }
 
+  const relatedArticles = await getRelatedArticles(article.category, article.slug, 4)
+
   const positivityClass = getPositivityColor(article.positivity_score)
   const positivityLabel = getPositivityLabel(article.positivity_score)
 
   // Convert content paragraphs
   const paragraphs = article.content.split('\n\n').filter(Boolean)
+
+  // Split content: first half, then related articles, then second half
+  const midPoint = Math.ceil(paragraphs.length / 2)
+  const firstHalf = paragraphs.slice(0, midPoint)
+  const secondHalf = paragraphs.slice(midPoint)
 
   return (
     <article className="pb-16">
@@ -94,7 +101,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {article.at_a_glance && article.at_a_glance.length > 0 && (
             <div className="mb-10 bg-cream-50 rounded-xl p-5 md:p-6">
               <h2 className="font-serif text-sm font-semibold text-stone-500 uppercase tracking-wider mb-3">
-                Num Relance
+                Em resumo
               </h2>
               <ul className="space-y-2">
                 {article.at_a_glance.map((point, index) => (
@@ -107,12 +114,59 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </div>
           )}
 
-          {/* Article Content */}
+          {/* Article Content — First Half */}
           <div className="article-content">
-            {paragraphs.map((paragraph, index) => (
+            {firstHalf.map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
           </div>
+
+          {/* Related Articles (inline, breaking the text) */}
+          {relatedArticles.length > 0 && (
+            <aside className="my-10 py-6 border-y border-sage-100">
+              <h2 className="font-serif text-sm font-semibold text-stone-500 uppercase tracking-wider mb-4">
+                Mais sobre {article.category}
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {relatedArticles.map((related) => (
+                  <Link
+                    key={related.id}
+                    href={`/article/${related.slug}`}
+                    className="group flex gap-3 p-3 rounded-lg hover:bg-cream-50 transition-colors"
+                  >
+                    {related.image_url && (
+                      <div className="relative w-16 h-16 flex-shrink-0 rounded-md overflow-hidden bg-stone-100">
+                        <Image
+                          src={related.image_url}
+                          alt=""
+                          fill
+                          className="object-cover"
+                          sizes="64px"
+                        />
+                      </div>
+                    )}
+                    <div className="min-w-0">
+                      <h3 className="font-serif text-sm font-semibold text-stone-800 leading-snug group-hover:text-sage-700 transition-colors line-clamp-2">
+                        {related.title}
+                      </h3>
+                      <span className="text-xs text-stone-400 mt-1 block">
+                        {formatRelativeTime(related.published_at)}
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </aside>
+          )}
+
+          {/* Article Content — Second Half */}
+          {secondHalf.length > 0 && (
+            <div className="article-content">
+              {secondHalf.map((paragraph, index) => (
+                <p key={`second-${index}`}>{paragraph}</p>
+              ))}
+            </div>
+          )}
 
           {/* Mindful Reflection Moment */}
           <div className="mt-12 pt-8 border-t border-sage-100">
