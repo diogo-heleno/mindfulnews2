@@ -108,12 +108,20 @@ PONTUAÇÃO DE POSITIVIDADE (sê honesto mas procura activamente o ângulo const
 - 2: Desafiante (problemas reais, mas sempre com contexto de esforços de resposta e resiliência)
 - 1: Urgente (emergência aguda, enquadrada com dignidade, contexto e foco na resposta humana)
 
+SELECÇÃO DE IMAGEM:
+- Cada artigo-fonte inclui um campo "image_url" (pode ser null).
+- Escolhe a imagem que MELHOR representa o artigo sintetizado. A imagem deve ser relevante para o tema principal do texto que escreveste.
+- Prefere imagens do artigo-fonte que mais contribuiu para a síntese.
+- NUNCA escolhas uma imagem que não tenha relação directa com o conteúdo do artigo sintetizado.
+- Se nenhuma imagem for adequada, devolve null.
+
 Formato de saída (apenas JSON):
 {{
   "title": "Título claro e informativo em português, enquadramento construtivo e internacional",
   "summary": "Uma frase-resumo construtiva e esperançosa em português (máx. 200 caracteres)",
   "content": "Texto completo do artigo em português com parágrafos...",
-  "positivity_score": 3
+  "positivity_score": 3,
+  "image_url": "URL da imagem mais relevante ou null"
 }}
 
 Artigos-fonte:
@@ -172,11 +180,12 @@ def synthesize_cluster(
     if not matched:
         return None
     
-    # Prepare article data for prompt
+    # Prepare article data for prompt (include image_url for selection)
     articles_text = json.dumps([{
         "title": a["title"],
         "summary": a["summary"][:500],
-        "link": a["link"]
+        "link": a["link"],
+        "image_url": a.get("image_url")
     } for a in matched], indent=2)
     
     prompt = SYNTHESIS_PROMPT.format(
@@ -205,6 +214,13 @@ def synthesize_cluster(
             if all(k in result for k in ["title", "summary", "content", "positivity_score"]):
                 result["category"] = category
                 result["source_articles"] = matched
+
+                # Use Claude's image choice if valid, fallback to first available
+                chosen_image = result.get("image_url")
+                if chosen_image and isinstance(chosen_image, str) and chosen_image.startswith("http"):
+                    result["chosen_image"] = chosen_image
+                else:
+                    result["chosen_image"] = None
                 
                 # Ensure positivity score is valid
                 score = result["positivity_score"]
@@ -330,7 +346,7 @@ def process_articles() -> Tuple[int, int]:
         if result:
             # Get metadata from source articles
             source_articles = result.get("source_articles", [])
-            image_url = get_best_image(source_articles)
+            image_url = result.get("chosen_image") or get_best_image(source_articles)
             published_at = get_latest_date(source_articles)
             original_links = [a["link"] for a in source_articles]
             
